@@ -1,15 +1,21 @@
 <template>
-     
-      <!-- /#sidebar-wrapper -->
+    <v-app>
+        <v-data-table :items="items"></v-data-table>
 
-<router-view/>
+      <router-view/>
+    </v-app>
 </template>
-<script>
-    export default {
-        methods: {
-			
-		}
-    }
+<script setup>
+    const items = [
+    {
+      name: 'African Elephant',
+      species: 'Loxodonta africana',
+      diet: 'Herbivore',
+      habitat: 'Savanna, Forests',
+    },
+    // ... more items
+  ]
+  console.log(items)
 </script>
 
 <style>
