@@ -31,5 +31,7 @@ Route::controller(EmployeeController::class)->group(function(){
     Route::post('employeeList', 'getEmployee');
     Route::get('employee/formData', 'getEmployeeFormData');
     Route::post('employee/create', 'createEmployee');
+    Route::get('employee/userData/{id}', 'getUpdateUserData');
+    Route::post('employee/update', 'updateEmployee');
 });
 

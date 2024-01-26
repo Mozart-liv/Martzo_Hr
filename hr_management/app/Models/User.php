@@ -18,7 +18,7 @@ class User extends Authenticatable
     use Notifiable;
     use TwoFactorAuthenticatable;
 
-    
+
     /**
      * The attributes that are mass assignable.
      *
@@ -30,8 +30,10 @@ class User extends Authenticatable
         'password',
         'phone',
         'gender',
-        'role',
+        'role_id',
         'address',
+        'nrc',
+        'img',
         'employee_id',
         'department_id',
         'date_of_join',

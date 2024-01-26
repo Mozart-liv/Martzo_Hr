@@ -1,21 +1,12 @@
 <template>
     <v-app>
-        <v-data-table :items="items"></v-data-table>
+        
 
       <router-view/>
     </v-app>
 </template>
 <script setup>
-    const items = [
-    {
-      name: 'African Elephant',
-      species: 'Loxodonta africana',
-      diet: 'Herbivore',
-      habitat: 'Savanna, Forests',
-    },
-    // ... more items
-  ]
-  console.log(items)
+
 </script>
 
 <style>

@@ -9,20 +9,16 @@ use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
-    private $user = array();
-
-    public function __construct()
-    {
-        $this->user = array(
-            "name" => "WY",
-            "email" => "wy@gmail.com",
-            "password" => Hash::make('thepassword'),
-            "gender" => 'male',
-            "phone" => '0987654345',
-        );
-    }
     public function run(): void
     {
-        User::insert([$this->user]);
+        User::create([
+            "name" => "admin",
+            "email" => "admin@gmail.com",
+            "password" => Hash::make('admin1234'),
+            "gender" => 'male',
+            "phone" => '0987654345',
+            "role_id" => 1,
+            "department_id" => 1
+        ]);
     }
 }

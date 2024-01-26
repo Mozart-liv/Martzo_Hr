@@ -22,10 +22,11 @@ return new class extends Migration
             $table->bigInteger('phone')->uniqid();
             $table->text('address')->nullable();
             $table->text('nrc')->nullable();
+            $table->string('img')->nullable();
             $table->string('employee_id')->nullable();
             $table->bigInteger('department_id')->nullable();
             $table->bigInteger('role_id')->nullable();
-            $table->date('date_of_join')->default(Carbon::today())->nullable();
+            $table->date('date_of_join')->default(Carbon::today());
             $table->boolean('is_present')->default(true);
             $table->rememberToken();
             $table->foreignId('current_team_id')->nullable();
