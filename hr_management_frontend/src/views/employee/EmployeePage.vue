@@ -1,7 +1,7 @@
 <template>
   <div>
     <Header></Header>
-    <div class="col-md-9 my-5 mx-auto">
+    <div class="col-md-10 my-5 mx-auto p-3">
       <button class="btn btn-primary" @click="goCreate()">
         <i class="fa-regular fa-square-plus"></i>
         Create Employee
@@ -9,7 +9,7 @@
       <div class="card mt-3">
         <div class="card-body p-4">
           <v-row>
-            <v-col md="3">
+            <v-col md="3" >
               <v-text-field
                 v-model="search"
                append-icon="mdi-magnify"
@@ -56,10 +56,10 @@
               </template>
 
 				<!-- action buttons  -->
-              <template v-slot:[`item.actions`]="{item}">
-				<v-icon small @click="updatePage(item.id)" class="me-3 text-primary">mdi-information-outline</v-icon>
-                <v-icon small @click="updatePage(item.id)" class="me-3">mdi-pencil</v-icon>
-                <v-icon small @click="updatePage(item.id)" class="me-3 text-danger">mdi-delete</v-icon>
+              <template v-slot:[`item.id`]="{item}">
+				<v-icon small @click="detailPage(item.id)" class="me-1 text-primary">mdi-information-outline</v-icon>
+                <v-icon small @click="updatePage(item.id)" class="me-1">mdi-pencil</v-icon>
+                <v-icon small @click="deleteData(item.id)" v-if="userInfo.role_id == 1" class="me-1 text-danger">mdi-delete</v-icon>
               </template>
               </v-data-table>
             </v-col>
@@ -96,12 +96,12 @@ export default {
         { title: "Role", value: "role" },
         { title: "Department", value: "department_name" },
         { title: "Is present", value: "is_present" },
-        { title: "Actions", value: "actions" , sortable: false},
+        { title: "Actions", value: "id"},
       ],
       items: [],
       loading: "",
 		itemsPerPage:5,
-		total:0
+		total:0,
     };
   },
   computed: {
@@ -143,7 +143,7 @@ export default {
           icon: "success",
         });
       }
-      this.message = "";
+      this.$router.replace({'query': null});
     },
     updatePage(id){
        this.$router.push({
@@ -152,7 +152,44 @@ export default {
             id: id
         }
        })
-    }
+    },
+    detailPage(id){
+      this.$router.push({
+        name: 'employeeDetail',
+        query: {
+          id: id
+        }
+      })
+    },
+	deleteData(id){
+		Swal.fire({
+			title: "Are you sure?",
+			text: "You won't be able to revert this!",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#3085d6",
+			cancelButtonColor: "#d33",
+			confirmButtonText: "Yes, delete it!"
+		}).then((result) => {
+			if (result.isConfirmed) {
+				axios.get("http://localhost:8000/api/employee/delete/" + id).then((response)=>{
+				console.log(response);
+				Swal.fire({
+				title: "Deleted!",
+				text: response.data,
+				icon: "success"
+				});
+				this.getData();
+				
+				}).catch((e)=>{
+					console.log(e);
+				})
+				
+			}
+			
+		});
+		
+	}
   },
 
   mounted() {

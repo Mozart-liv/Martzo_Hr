@@ -4,7 +4,7 @@
         <div class="container">
             <div class="card my-5 ">
                 <div class="card-body p-5">
-                    <h1 class="mb-5 text-primary">Create Employee</h1>
+                    <h1 class="mb-5 text-primary">Update Employee</h1>
                     <form class="text-start row">
                         <div class="col-md-6 px-3">
                             <div class="form-gorup mb-4">
@@ -56,9 +56,9 @@
                         <div class="col-md-6 px-3">
                             <div class="form-group mb-4">
                                 <label class="form-label">Image</label>
-                                <input type="file" @change="imgInput" class="form-control form-control-lg" :class="errors.img ? 'is-invalid' : ''" />    
+                                <input type="file" @change="imgInput" ref="fileInput" class="form-control form-control-lg" :class="errors.img ? 'is-invalid' : ''" />    
                                 <div v-if="errors && errors.img" class="text-danger">
-                                    {{ errors.img[0] }} 
+                                    {{ errors.img }} 
                                 </div>
                             </div>
 
@@ -101,6 +101,18 @@
                                     {{ errors.role_id[0] }} 
                                 </div>
                             </div>
+
+                            <div class="form-group mb-4">
+                                <label class="form-label">Is Present?</label>
+                                <select class="select form-control form-control-lg" v-model="data.is_present" :class="errors.is_present ? 'is-invalid' : ''" >
+                                    <option  disabled >Is present</option>
+                                    <option value="1">Present</option>
+                                    <option value="0">Leave</option>
+                                </select>
+                                <div v-if="errors && errors.is_present" class="text-danger">
+                                    {{ errors.is_present[0] }} 
+                                </div>
+                            </div>
                         </div>
 
                         <div class="d-flex justify-content-center my-3">
@@ -131,7 +143,7 @@
                 data: {},
                 departmentData: [],
                 roleData: [],
-                errors: ""
+                errors: {}
             }
         },
         methods: {
@@ -150,7 +162,15 @@
                 })
             },
             imgInput(event){
-            this.data.img = event.target.files[0];
+             let file = this.$refs.fileInput.files[0];
+            let allow = ['image/jpeg', 'image/png', 'image/jpg'];
+
+            if (!allow.includes(file.type)) {
+                this.errors = {img: 'Invalid file type. Only jpeg, png, and gif are allowed.'};
+            }else{
+                this.errors.img = null;
+                this.data.img = event.target.files[0];
+            }
             },
             UpdateEmployee(){
                  const form = new FormData();
@@ -167,6 +187,7 @@
                 form.append('gender', this.data.gender);
                 form.append('department_id', this.data.department_id);
                 form.append('role_id', this.data.role_id);
+                form.append('is_present', this.data.is_present);
                 axios.post("http://localhost:8000/api/employee/update", form).then((response)=>{
                     if(response.data.status == true){
                     this.$router.push({

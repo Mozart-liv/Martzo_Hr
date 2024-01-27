@@ -66,16 +66,18 @@
 
                             <div class="form-group mb-4">
                                 <label class="form-label">Image</label>
-                                <input type="file" @change="imgInput" class="form-control form-control-lg" :class="errors.img ? 'is-invalid' : ''" />    
+                                <input type="file" @change="imgInput" ref="fileInput" class="form-control form-control-lg" :class="errors.img ? 'is-invalid' : ''" />    
                                 <div v-if="errors && errors.img" class="text-danger">
-                                    {{ errors.img[0] }} 
+                                    {{ errors.img }} 
                                 </div>
                             </div>
 
                             <div class="form-group mb-4">
                                 <label class="form-label">Date of Join</label>
-                                <input type="date" v-model="data.date_of_join" class="form-control form-control-lg" />    
-                                
+                                <input type="date" v-model="data.date_of_join" class="form-control form-control-lg" :class="errors.date_of_join ? 'is-invalid' : ''"/>    
+                                <div v-if="errors && errors.date_of_join" class="text-danger">
+                                    {{ errors.date_of_join[0] }} 
+                                </div>
                             </div>
 
                             <div class="form-group mb-4">
@@ -145,7 +147,7 @@
                 password: "",
                 phone: "",
                 nrc: "",
-                img: "",
+                img: null,
                 address: "",
                 date_of_join: "",
                 gender: "",
@@ -166,7 +168,16 @@
             })
         },
         imgInput(event){
-            this.data.img = event.target.files[0];
+            let file = this.$refs.fileInput.files[0];
+            let allow = ['image/jpeg', 'image/png', 'image/jpg'];
+
+            if (!allow.includes(file.type)) {
+                this.errors = {img: 'Invalid file type. Only jpeg, png, and gif are allowed.'};
+            }else{
+                this.errors.img = null;
+                this.data.img = event.target.files[0];
+            }
+            
         },
         //post data to backend
         createEmployee(){

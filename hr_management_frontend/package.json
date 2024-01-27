@@ -24,6 +24,7 @@
     "sweetalert2": "^11.6.13",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3",
+    "vue-session": "^1.0.0",
     "vuetify": "^3.5.1",
     "vuex": "^4.0.0"
   },

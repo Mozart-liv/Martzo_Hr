@@ -48,5 +48,10 @@ class AuthController extends Controller
         }
     }
 
+    //get User Data
+    public function getUser($id){
+        
+    }
+
 
 }

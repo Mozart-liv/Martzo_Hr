@@ -28,10 +28,11 @@ Route::controller(AuthController::class)->group(function(){
 
 //Employee data
 Route::controller(EmployeeController::class)->group(function(){
-    Route::post('employeeList', 'getEmployee');
+    Route::post('employeeList', 'getEmployeeList');
     Route::get('employee/formData', 'getEmployeeFormData');
     Route::post('employee/create', 'createEmployee');
-    Route::get('employee/userData/{id}', 'getUpdateUserData');
+    Route::get('employee/userData/{id}', 'getUserData');
     Route::post('employee/update', 'updateEmployee');
+    Route::get('employee/delete/{id}', 'deleteEmployee');
 });
 

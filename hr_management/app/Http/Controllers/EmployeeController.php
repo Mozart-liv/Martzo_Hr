@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Validator;
 class EmployeeController extends Controller
 {
     //get employee
-    public function getEmployee(Request $request){
+    public function getEmployeeList(Request $request){
         if($request->role_id == 1){
             $employee = User::select('users.*', 'departments.title as department_name', 'roles.title as role')
                                 ->leftJoin('departments','departments.id', 'users.department_id')
@@ -75,8 +75,11 @@ class EmployeeController extends Controller
     }
 
     //get update user data
-    public function getUpdateUserData($id){
-        $data = User::where('id', $id)->first();
+    public function getUserData($id){
+        $data = User::select('users.*', 'departments.title as department_name', 'roles.title as role')
+                                ->leftJoin('departments','departments.id', 'users.department_id')
+                                ->leftJoin('roles','roles.id', 'users.role_id')
+                                ->where('users.id', $id)->first();
         return response()->json($data);
     }
 
@@ -95,13 +98,14 @@ class EmployeeController extends Controller
             'gender' => $request->gender,
             'department_id' => $request->department_id,
             'role_id' => $request->role_id,
+            'is_present' => $request->is_present
         ];
 
          if($request->hasFile('img')){
             //delete old data
             $oldData = User::where('id', $request->id)->first();
             $oldImg = $oldData['img'];
-            File::delete(public_path('image'), $oldImg);
+            File::delete(public_path() . '/image/'. $oldImg);
 
             //update
             $file = $request->file('img');
@@ -111,15 +115,33 @@ class EmployeeController extends Controller
             $data['img'] = $fileName;
         }
 
-        User::where('id', $request->id)->update($data);
+        if(User::where('id', $request->id)->update($data)){
+             $message = 'Employee successfully updated!';
+            $status = true;
+        }else{
+             $message = 'Employee fail updated!';
+            $status = false;
+        }
 
-         $message = 'Employee successfully updated!';
-        $status = true;
         return response()->json([
             'message' => $message,
             'status' => $status
         ]);
 
+    }
+
+    //delete
+    public function deleteEmployee($id){
+        $dbData = User::where('id', $id)->first();
+        $dbimg = $dbData['img'];
+
+        User::where('id', $id)->delete();
+        if(File::exists(public_path() . '/image/'. $dbimg)){
+            File::delete(public_path() . '/image/'. $dbimg);
+        }
+
+        $message = 'Employee deleted successfully!';
+        return response()->json($message);
     }
 
     //validate
@@ -131,15 +153,16 @@ class EmployeeController extends Controller
             'password' => 'required|min:6',
             'phone' => 'required|min:9',
             'nrc' => 'required',
-            'img' => 'mimes:jpeg,jpg,png',
             'address' => 'required',
             'gender' => 'required',
             'department_id' => 'required',
+            'date_of_join' => 'required',
             'role_id' => 'required'
 
         ])->validate();
     }
 
+    //update validation
     private function updateVal($request, $id){
         Validator::make($request->all(), [
             'employee_id' => 'required|unique:users,employee_id,' . $id,

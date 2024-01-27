@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div >
 	<div id="wrapper" :class="{toggled: isClose}">
     
       <div id="page-content-wrapper">
@@ -32,12 +32,16 @@
       >
         <ul class="nav sidebar-nav">
           <div class="sidebar-header">
-            <div class="sidebar-brand">
-              <a href="#">MartzoHR</a>
+            <div class="sidebar-brand d-flex justify-space-around">
+              <div class="text-white">MartzoHR</div>
+              <div @click="toggle()">
+                <i class="fa-solid fa-xmark text-white fs-2"></i>
+              </div>
             </div>
           </div>
           <li ><i class="fa-solid fa-house me-3"></i>Home</li>
-          <li @click="employee()"><i class="fa-solid fa-users me-3"></i>Employees Management</li>
+          <li><i class="fa-solid fa-user me-3"></i>Profile</li>
+          <li @click="employee()" v-if="userInfo.role_id == 1"><i class="fa-solid fa-users me-3"></i>Employees Management</li>
           <li><i class="fa-solid fa-house me-3"></i>Events</li>
           <li>Team</li>
           <li>Services</li>
@@ -51,7 +55,7 @@
     </div>
 </template>
 <script>
-
+import { mapGetters } from "vuex";
 export default {
     name: 'AppHeader',
     data () {
@@ -59,19 +63,22 @@ export default {
         isClose: false
       }
     },
+      computed: {
+    ...mapGetters(["userInfo", "loginStatus"]),
+    },
     methods: {
         employee () {
 				this.$router.push({
 					name: 'employee'
 				})
-		},
-		toggle(){
-			if(this.isClose == false){
-				this.isClose = true
-			}else{
-				this.isClose = false
-			}
-		}
+      },
+      toggle(){
+        if(this.isClose == false){
+          this.isClose = true
+        }else{
+          this.isClose = false
+        }
+      }
     }
 }
 </script>
@@ -83,6 +90,7 @@ export default {
     overflow-x: hidden;
     background-color: #CFD8DC;
 }
+
 body,
 html { height: 100%;}
 .nav .open > a, 

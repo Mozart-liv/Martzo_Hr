@@ -33,6 +33,16 @@ const routes: Array<RouteRecordRaw> = [
     name: "update#employee",
     component: () => import("../views/employee/UpdateEmployee.vue"),
   },
+  {
+    path: "/employee/detail",
+    name: "employeeDetail",
+    component: () => import("../views/employee/EmployeeDetail.vue"),
+  },
+  {
+    path: "/profile",
+    name: "profile",
+    component: () => import("../views/profilePage.vue"),
+  },
 ];
 
 
