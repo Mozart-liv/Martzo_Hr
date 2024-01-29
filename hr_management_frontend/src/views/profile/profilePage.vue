@@ -74,11 +74,7 @@
                         
                     </div>
                     <div class="text-end mt-3">
-                        <button class="btn btn-primary me-3">
-                            <i class="fa-regular fa-edit"></i>
-                            Edit Profile
-                        </button>
-                        <button class="btn btn-primary">
+                        <button class="btn btn-primary" @click="passwordChgPage(userInfo.id)">
                             <i class="fa-solid fa-key"></i>
                             Change Password
                         </button>
@@ -90,10 +86,11 @@
 </template>
 
 <script>
-    import Header from "./AppHeader.vue";
-    import Footer from "./FooterPage.vue";
+    import Header from "../AppHeader.vue";
+    import Footer from "../FooterPage.vue";
     import { mapGetters } from "vuex";
-import axios from 'axios';
+    import Swal from "sweetalert2";
+    import axios from 'axios';
     export default {
         name: 'profilePage',
           components: {
@@ -121,10 +118,27 @@ import axios from 'axios';
                 }).catch((e)=>{
                     console.log(e);
                 })
-            }
+            },
+            passwordChgPage(id){
+                this.$router.push({
+                    name: 'passwordchange',
+                    query: {id: id}
+                })
+            },
+            messageAlert(mes) {
+                if (mes !== undefined && mes !== "" && mes !== null) {
+                    Swal.fire({
+                    title: "success!",
+                    text: mes,
+                    icon: "success",
+                    });
+                }
+                this.$router.replace({'query': null});
+            },
         },
         mounted () {
             this.getData();
+            this.messageAlert(this.$route.query.message);
         }
     }
 </script>

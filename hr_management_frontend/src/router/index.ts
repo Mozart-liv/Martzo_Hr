@@ -18,6 +18,7 @@ const routes: Array<RouteRecordRaw> = [
     name: "home",
     component: () => import("../views/HomePage.vue"),
   },
+  //employee 
   {
     path: "/employee",
     name: "employee",
@@ -38,10 +39,17 @@ const routes: Array<RouteRecordRaw> = [
     name: "employeeDetail",
     component: () => import("../views/employee/EmployeeDetail.vue"),
   },
+
+  //profile
   {
     path: "/profile",
     name: "profile",
-    component: () => import("../views/profilePage.vue"),
+    component: () => import("../views/profile/profilePage.vue"),
+  },
+  {
+    path: "/profile/passwordchange",
+    name: "passwordchange",
+    component: () => import("../views/profile/passwordChg.vue"),
   },
 ];
 

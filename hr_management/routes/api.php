@@ -24,6 +24,7 @@ Route::middleware('auth:sanctum')->group(function(){
 Route::controller(AuthController::class)->group(function(){
     Route::post('user/register', 'register');
     Route::post('user/login', 'login');
+    Route::post('user/change/password/{id}', 'changePassword');
 });
 
 //Employee data

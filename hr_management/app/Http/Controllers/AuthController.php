@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
@@ -19,6 +20,7 @@ class AuthController extends Controller
             'password' => Hash::make($request->password)
         ];
 
+        //check email unique
         if(count(User::where('email', $request->email)->get() ) > 0){
             $message = false;
         }else{
@@ -48,10 +50,31 @@ class AuthController extends Controller
         }
     }
 
-    //get User Data
-    public function getUser($id){
-        
+    //change password
+    public function changePassword($id, Request $request){
+        $this->passwordVal($request);
+        $userData = User::where('id', $id)->first();
+        $dbPsw = $userData->password;
+
+        //check old password same db password
+        if(Hash::check($request->oldpassword, $dbPsw)){
+            $user = User::find($id);
+            $user->password = Hash::make($request->newpassword);
+            $message = "Password change Successfully!";
+            $status = true;
+        }else{
+            $message = "Password wrong! try again...";
+            $status = false;
+        }
+        return response()->json(['message' => $message, 'status' => $status]);
     }
 
-
+     //password validation
+    private function passwordVal($request){
+        Validator::make($request->all(), [
+            'oldpassword' => 'required|min:6',
+            'newpassword' => 'required|min:6',
+            'confirmpassword' => 'required|same:newpassword'
+        ])->validate();
+    }
 }

@@ -85,7 +85,6 @@ class EmployeeController extends Controller
 
     //update data
     public function updateEmployee(Request $request){
-        logger($request);
         $this->updateVal($request, $request->id);
         $data = [
             'employee_id' => $request->employee_id,
