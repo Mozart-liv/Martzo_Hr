@@ -6,31 +6,35 @@
           <div class="card" style="border-radius: 15px;">
             <div class="card-body p-5">
               <h2 class="text-uppercase text-center mb-5">Create an account</h2>
-				<div class="alert alert-danger" role="alert" v-if="error != ''" >
-					{{ error }}
-				</div>
               <form class="text-start">
 
-                <div class="form-group mb-4">
-                  <label class="form-label" for="form3Example3cg">Your Email</label>
-                  <input type="email" id="form3Example3cg" v-model="user.email" class="form-control form-control-lg" />
-                </div>
+                 <div class="form-group mb-4">
+                    <label class="form-label">Email</label>
+                    <input type="email" v-model="user.email" class="form-control form-control-lg" :class="errors.email ? 'is-invalid' : ''" />
+                    <div v-if="errors && errors.email" class="text-danger">
+                        {{ errors.email[0] }} 
+                    </div>
+                  </div>
 
                 <div class="form-group mb-4">
-					<label class="form-label" for="form3Example4cg">Password</label>
-                  <input type="password" id="form3Example4cg" v-model="user.password" class="form-control form-control-lg" />
-                  
+                    <label class="form-label" for="form3Example4cg">Password</label>
+                    <input type="password" v-model="user.password" id="form3Example4cg" class="form-control form-control-lg" :class="errors.password ? 'is-invalid' : ''" />
+                    <div v-if="errors && errors.password" class="text-danger">
+                        {{ errors.password[0] }} 
+                    </div>
                 </div>
 
 
                 <div class="d-flex justify-content-center">
                   <button type="button"
-                    class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" @click="checkForm()">Login</button>
+                    class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" @click="login()">Login</button>
                 </div>
 
                 <p class="text-center text-muted mt-5 mb-0">Haven't account yet?
-				<span class="text-decoration-underline text-info" @click="registerPage()">Register here</span>	</p>
-
+               <span class="text-decoration-underline text-info" @click="registerPage()">Register here</span>	</p>
+                  <div v-if="errors.message" class="text-danger">
+                      {{ errors.message }}
+                  </div>
               </form>
 
             </div>
@@ -49,43 +53,39 @@
                     email: "",
                     password: ""
                 },
-				error: ""   
+                errors: {}
             }
         },
         methods: {
-            checkForm () {
-                if(this.user.email == "" && this.user.password == "" ){
-					this.error = "Required something! Check your form"
-				}else{
-					this.login()
-				}
-            },
-            login(){
+          login(){
                 axios.post("http://localhost:8000/api/user/login", this.user).then((response)=>{
-                  console.log(response);
-                    if(!response.data.message){
-						this.error = "Wrong password! try again"
-					}else{
-						this.setData(response);
-						this.goHomePage()
-
-					}
-                })
-            },
-			setData(response){
-				this.$store.dispatch('setUserData', response.data.user);
-				this.$store.dispatch('setLoginStatus', response.data.message);
-			},
-			goHomePage(){
-				this.$router.push({
-					name: 'home'
-				})
-			},
-			registerPage(){
-				this.$router.push({
-					name: 'register'
-				})
-			}
+                  if(response.data.status == true){
+                    this.setData(response);
+                    this.goHomePage();
+                  }else{
+                    this.errors.message = response.data.message
+                  }
+                }).catch((e)=>{
+                console.log(e);
+                if(e.response.status == 422){
+                    this.errors = e.response.data.errors;
+                }
+            })
+          },
+          setData(response){
+            this.$store.dispatch('setUserData', response.data.user);
+            this.$store.dispatch('setToken', response.data.token);
+          },
+          goHomePage(){
+            this.$router.push({
+              name: 'home'
+            })
+          },
+          registerPage(){
+            this.$router.push({
+              name: 'register'
+            })
+          }
         }
     }
 </script>

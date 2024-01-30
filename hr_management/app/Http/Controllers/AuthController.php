@@ -10,43 +10,31 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-    //Register
-    public function register(Request $request){
-        $data = [
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'gender' => $request->gender,
-            'password' => Hash::make($request->password)
-        ];
-
-        //check email unique
-        if(count(User::where('email', $request->email)->get() ) > 0){
-            $message = false;
-        }else{
-            User::create($data);
-            $message = true;
-        }
-
-        return response()->json($message);
-    }
-
     //login
     public function login(Request $request){
+        $this->loginVal($request);
         $user = User::where('email', $request->email)->first();
 
         if(isset($user)){
             if(Hash::check($request->password, $user->password)){
                 return response()->json([
                     'user' => $user,
-                    'message' => true
+                    'status' => true,
+                    'token' => $user->createToken(time())->plainTextToken
                 ]);
             }else{
                 return response()->json([
                     'user' => null,
-                    'message' => false
+                    'status' => false,
+                    'message' => 'Password was wrong! '
                 ]);
             }
+        }else{
+            return response()->json([
+                    'user' => null,
+                    'status' => false,
+                    'message' => 'Does not have account with this email!'
+                ]);
         }
     }
 
@@ -58,15 +46,25 @@ class AuthController extends Controller
 
         //check old password same db password
         if(Hash::check($request->oldpassword, $dbPsw)){
-            $user = User::find($id);
-            $user->password = Hash::make($request->newpassword);
-            $message = "Password change Successfully!";
+            $data = [
+                'password' => Hash::make($request->newpassword)
+            ];
+            User::where('id', $id)->update($data);
+            $message = null;
             $status = true;
         }else{
             $message = "Password wrong! try again...";
             $status = false;
         }
         return response()->json(['message' => $message, 'status' => $status]);
+    }
+
+    //validation password
+    private function loginVal($request){
+        Validator::make($request->all(), [
+            'email' => 'required',
+            'password' => 'required'
+        ])->validate();
     }
 
      //password validation

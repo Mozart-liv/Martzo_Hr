@@ -1,7 +1,10 @@
 <template>
     <div>
         <Header></Header>
-        <div class="container col-6">
+        <div class="container col-6 my-5">
+            <div class="col-md-6 " onclick="history.back()">
+                    <v-icon>mdi-arrow-left-top</v-icon>Back
+                </div>
             <div class="card my-5 ">
                 <div class="card-body p-5">
                     <h1 class="mb-5 text-primary">Change Password</h1>
@@ -24,7 +27,7 @@
                             <label class="form-label" for="form3Example4cg">Confirm New Password</label>
                             <input type="password" v-model="data.confirmpassword" id="form3Example4cg" class="form-control form-control-lg" :class="errors.confirmpassword ? 'is-invalid' : ''" />
                             <div v-if="errors && errors.confirmpassword" class="text-danger">
-                                {{ errors.confirmPsw[0] }} 
+                                {{ errors.confirmpassword[0] }} 
                             </div>
                         </div>
 
@@ -69,10 +72,7 @@
             axios.post("http://localhost:8000/api/user/change/password/" + this.id , this.data).then((response)=>{
                 console.log(response);
                 if(response.data.status == true){
-                    this.$router.push({
-                        name: 'profile',
-                        query: {message: response.data.message}
-                    })
+                    location.reload();
                 }else{
                     this.errors.message = response.data.message
                 }

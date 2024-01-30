@@ -172,7 +172,7 @@
             let allow = ['image/jpeg', 'image/png', 'image/jpg'];
 
             if (!allow.includes(file.type)) {
-                this.errors = {img: 'Invalid file type. Only jpeg, png, and gif are allowed.'};
+                this.errors = {img: 'Invalid file type. Only jpeg, png, and jpg are allowed.'};
             }else{
                 this.errors.img = null;
                 this.data.img = event.target.files[0];

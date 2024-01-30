@@ -3,15 +3,15 @@ import { createStore } from 'vuex'
 export default createStore({
   state: {
     user: {},
-    login: "",
+    token: "",
   },
   getters: {
     userInfo: (state) => state.user,
-    loginStatus: (state) => state.login,
+    getToken: (state) => state.token,
   },
   mutations: {},
   actions: {
-    setLoginStatus: ({ state }, value) => state.login = value,
+    setToken: ({ state }, value) => state.token = value,
     setUserData: ({ state }, value) => state.user = value,
   },
   modules: {},

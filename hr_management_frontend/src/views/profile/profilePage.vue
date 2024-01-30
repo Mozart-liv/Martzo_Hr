@@ -74,9 +74,13 @@
                         
                     </div>
                     <div class="text-end mt-3">
-                        <button class="btn btn-primary" @click="passwordChgPage(userInfo.id)">
+                        <button class="btn btn-primary me-3" @click="passwordChgPage(userInfo.id)">
                             <i class="fa-solid fa-key"></i>
                             Change Password
+                        </button>
+                        <button class="btn btn-danger" @click="logout()">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                            Logout
                         </button>
                     </div>
                 </v-card>
@@ -103,7 +107,7 @@
             }
         },
         computed: {
-            ...mapGetters(["userInfo", "loginStatus"]),
+            ...mapGetters(["userInfo", "getToken"]),
         },
         methods: {
             getData () {
@@ -125,20 +129,24 @@
                     query: {id: id}
                 })
             },
-            messageAlert(mes) {
-                if (mes !== undefined && mes !== "" && mes !== null) {
-                    Swal.fire({
-                    title: "success!",
-                    text: mes,
-                    icon: "success",
-                    });
+            logout(){
+                Swal.fire({
+                    title: "Are you sure to logout?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, logout!"
+                    }).then((result) => {
+                    if (result.isConfirmed) {
+                        location.reload();
                 }
-                this.$router.replace({'query': null});
-            },
+                });
+               
+            }
         },
         mounted () {
             this.getData();
-            this.messageAlert(this.$route.query.message);
         }
     }
 </script>

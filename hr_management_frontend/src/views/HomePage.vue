@@ -22,16 +22,15 @@
             }
         },
         computed: {
-            ...mapGetters(["userInfo", "loginStatus"]),
+            ...mapGetters(["userInfo", "getToken"]),
         },
         methods: {
             checkLogin () {
                 
-                if(this.loginStatus === true){
+                if(this.getToken !== ""){
                     this.login = true
                 }
 
-                console.log(this.userInfo);
             }
         },
         mounted () {

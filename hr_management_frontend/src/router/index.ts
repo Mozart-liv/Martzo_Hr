@@ -4,21 +4,17 @@ import store from '@/store'
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: "/login",
+    path: "/",
     name: "login",
     component: LoginView,
-  },
-  {
-    path: "/",
-    name: "register",
-    component: () => import("../views/RegisterPage.vue"),
+    alias: "/login",
   },
   {
     path: "/home",
     name: "home",
     component: () => import("../views/HomePage.vue"),
   },
-  //employee 
+  //employee
   {
     path: "/employee",
     name: "employee",
@@ -40,6 +36,40 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("../views/employee/EmployeeDetail.vue"),
   },
 
+  //department
+  {
+    path: "/department",
+    name: "department",
+    component: () => import("../views/department/DepartmentPage.vue"),
+  },
+  {
+    path: "/department/create",
+    name: "create#department",
+    component: () => import("../views/department/CreateDepartment.vue"),
+  },
+  {
+    path: "/department/update",
+    name: "update#department",
+    component: () => import("../views/department/UpdateDepartment.vue"),
+  },
+
+  //department
+  {
+    path: "/role",
+    name: "role",
+    component: () => import("../views/role/RolePage.vue"),
+  },
+  {
+    path: "/role/create",
+    name: "create#role",
+    component: () => import("../views/role/CreateRole.vue"),
+  },
+  {
+    path: "/role/update",
+    name: "update#role",
+    component: () => import("../views/role/UpdateRole.vue"),
+  },
+
   //profile
   {
     path: "/profile",
@@ -59,15 +89,18 @@ const router = createRouter({
   routes
 })
 
-// router.beforeEach((to, from, next) => {
-//   console.log(store.getters.loginStatus);
-//   if (to.name !== 'login' && store.getters.loginStatus === "") {
-//     return next({
-//       name: 'login'
-//     })
-//   } else {
-//     next()
-//   }
+router.beforeEach((to, from, next) => {
+  console.log(store.getters.getToken);
+  if (
+    to.name !== "login" &&
+    store.getters.getToken === ""
+  ) {
+    return next({
+      name: "login",
+    });
+  } else {
+    next();
+  }
 
-// });
+});
 export default router

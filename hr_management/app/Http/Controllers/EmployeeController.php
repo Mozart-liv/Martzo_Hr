@@ -13,8 +13,7 @@ use Illuminate\Support\Facades\Validator;
 class EmployeeController extends Controller
 {
     //get employee
-    public function getEmployeeList(Request $request){
-        if($request->role_id == 1){
+    public function getEmployeeList(){
             $employee = User::select('users.*', 'departments.title as department_name', 'roles.title as role')
                                 ->leftJoin('departments','departments.id', 'users.department_id')
                                 ->leftJoin('roles','roles.id', 'users.role_id')
@@ -23,11 +22,6 @@ class EmployeeController extends Controller
                 'employeeData' => $employee,
                 'message' => true
             ]);
-        }else{
-            return response()->json([
-                'message' => false
-            ]);
-        }
     }
 
     //get Employee form Data
