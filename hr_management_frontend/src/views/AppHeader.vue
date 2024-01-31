@@ -41,9 +41,9 @@
           </div>
           <li ><i class="fa-solid fa-house me-3"></i>Home</li>
           <li><i class="fa-solid fa-user me-3"></i>Profile</li>
-          <li @click="employee()" v-if="userInfo.role_id == 1"><i class="fa-solid fa-users me-3"></i>Employees Management</li>
-          <li @click="department()" v-if="userInfo.role_id == 1"><i class="fa-solid fa-database me-3"></i>Department Mangement</li>
-          <li @click="role()" v-if="userInfo.role_id == 1"><i class="fa-solid fa-database me-3"></i>Role Mangement</li>
+          <li @click="employee()" v-if="userInfo.role_id == 1 || userInfo.role_id == 2"><i class="fa-solid fa-users me-3"></i>Employees Management</li>
+          <li @click="department()" v-if="userInfo.role_id == 1 || userInfo.role_id == 2"><i class="fa-solid fa-database me-3"></i>Department Mangement</li>
+          <li @click="role()" v-if="userInfo.role_id == 1 || userInfo.role_id == 2"><i class="fa-solid fa-database me-3"></i>Role Mangement</li>
           <li><i class="fa-solid fa-house me-3"></i>Events</li>
           <li>Team</li>
           <li>Services</li>

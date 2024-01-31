@@ -14,4 +14,13 @@ const vuetify = createVuetify({
   components,
   directives,
 })
-createApp(App).use(store).use(vuetify).use(router).mount('#app')
+
+import "ant-design-vue/dist/reset.css";
+import { DatePicker } from "ant-design-vue";
+
+createApp(App)
+  .use(store)
+  .use(vuetify)
+  .use(router)
+  .use(DatePicker)
+  .mount("#app");

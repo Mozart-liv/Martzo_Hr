@@ -6,12 +6,13 @@
               <a href="">
                 <i class="fas fa-home"></i>
               </a>
-              <a href="">
-                <i class="fas fa-home"></i>
-              </a>
-              <div @click="profile()" class="d-flex flex-column align-center">
+               <div @click="profile()" class="d-flex flex-column align-center">
                 <i class="fas fa-user"></i>
                 Profile
+              </div>
+              <div v-if="userInfo.role_id == 1" @click="company()" class="d-flex flex-column align-center">
+                <i class="fas fa-gear"></i>
+                Company Setting
               </div>
             </div>
           </div>
@@ -20,12 +21,21 @@
 </template>
 
 <script>
+    import { mapGetters } from "vuex";
     export default {
         name: 'FooterPage',
+        computed: {
+          ...mapGetters(["userInfo", "getToken"]),
+          },
         methods: {
           profile(){
           this.$router.push({
             name: 'profile'
+          })
+        },
+          company(){
+          this.$router.push({
+            name: 'company'
           })
         },
         }

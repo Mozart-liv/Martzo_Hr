@@ -81,6 +81,23 @@ const routes: Array<RouteRecordRaw> = [
     name: "passwordchange",
     component: () => import("../views/profile/passwordChg.vue"),
   },
+  {
+    path: "/profile",
+    name: "update#profile",
+    component: () => import("../views/profile/UpdateProfile.vue"),
+  },
+
+  //company setting
+  {
+    path: "/company",
+    name: "company",
+    component: () => import("../views/companySetting/CompanySetting.vue"),
+  },
+  {
+    path: "/company/update",
+    name: "update#company",
+    component: () => import("../views/companySetting/UpdateCompanySetting.vue"),
+  },
 ];
 
 

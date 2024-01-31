@@ -14,8 +14,8 @@
                             </v-avatar>
                         </div>
                         <div class="p-3 text-center">
-                            <h3>{{ userInfo.name }}</h3>
-                            <p class="text-grey">{{ userInfo.employee_id }}</p>
+                            <h3>{{ data.name }}</h3>
+                            <p class="text-grey">{{ data.employee_id }}</p>
                             <v-chip color="primary">
                                 {{ data.department_name }}
                             </v-chip>
@@ -25,12 +25,12 @@
                         <div class="col">
                             <div class="mb-5">
                                 <span class="text-grey m-2">Phone :</span>
-                                <span>{{ userInfo.phone }}</span>
+                                <span>{{ data.phone }}</span>
                             </div>
 
                              <div class="mb-5">
                                 <span class="text-grey m-2">Email :</span>
-                                <span>{{ userInfo.email }}</span>
+                                <span>{{ data.email }}</span>
                             </div>
 
                             <div class="mb-5">
@@ -40,31 +40,31 @@
 
                              <div class="mb-5">
                                 <span class="text-grey m-2">Gender :</span>
-                                <span>{{ userInfo.gender }}</span>
+                                <span>{{ data.gender }}</span>
                             </div>
                         </div>
 
                         <div class="col">
                              <div class="mb-5">
                                 <span class="text-grey m-2">Address :</span>
-                                <span>{{ userInfo.address }}</span>
+                                <span>{{ data.address }}</span>
                             </div>
 
                             <div class="mb-5">
                                 <span class="text-grey m-2">Nrc Number :</span>
-                                <span>{{ userInfo.nrc }}</span>
+                                <span>{{ data.nrc }}</span>
                             </div>
 
                              <div class="mb-5">
                                 <span class="text-grey m-2">Date of Join :</span>
-                                <span>{{ userInfo.date_of_join }}</span>
+                                <span>{{ data.date_of_join }}</span>
                             </div>
 
                              <div class="mb-5">
                                 <span class="text-grey m-2">Is present? :</span>
                                 <v-chip
-                                    :color="userInfo.is_present == 1 ? 'green' : 'red'"
-                                    :text="userInfo.is_present == 1 ? 'Present' : 'Leave'"
+                                    :color="data.is_present == 1 ? 'green' : 'red'"
+                                    :text="data.is_present == 1 ? 'Present' : 'Leave'"
                                     class="text-uppercase"
                                     label
                                     size="small"
@@ -74,11 +74,18 @@
                         
                     </div>
                     <div class="text-end mt-3">
-                        <button class="btn btn-primary me-3" @click="passwordChgPage(userInfo.id)">
+                        <button class="btn btn-primary me-3" @click="update(data.id)">
+                            <i class="fa-solid fa-key"></i>
+                            Update Profile
+                        </button>
+                        <button class="btn btn-primary me-3" @click="passwordChgPage(data.id)">
                             <i class="fa-solid fa-key"></i>
                             Change Password
                         </button>
-                        <button class="btn btn-danger" @click="logout()">
+                        
+                    </div>
+                    <div class="text-end mt-3">
+                        <button class="btn btn-danger me-3" @click="logout()">
                             <i class="fa-solid fa-right-from-bracket"></i>
                             Logout
                         </button>
@@ -129,6 +136,24 @@
                     query: {id: id}
                 })
             },
+            update(id){
+                this.$router.push({
+                name: 'update#profile',
+                query: {
+                    id: id
+                }
+            })
+            },
+            messageAlert(mes) {
+                if (mes !== undefined && mes !== "" && mes !== null) {
+                    Swal.fire({
+                    title: "success!",
+                    text: mes,
+                    icon: "success",
+                    });
+                }
+                this.$router.replace({'query': null});
+            },
             logout(){
                 Swal.fire({
                     title: "Are you sure to logout?",
@@ -146,6 +171,7 @@
             }
         },
         mounted () {
+            this.messageAlert(this.$route.query.message)
             this.getData();
         }
     }

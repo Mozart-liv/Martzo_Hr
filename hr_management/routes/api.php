@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CheckinCheckoutController;
+use App\Http\Controllers\CompanysettingController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\RoleController;
@@ -27,6 +29,12 @@ Route::middleware('auth:sanctum')->group(function(){
 Route::controller(AuthController::class)->group(function(){
     Route::post('user/login', 'login');
     Route::post('user/change/password/{id}', 'changePassword');
+});
+
+//company
+Route::controller(CompanysettingController::class)->group(function(){
+    Route::get('company/data', 'getCompanyData');
+    Route::post('company/update', 'updateCompany');
 });
 
 //Employee data
@@ -58,3 +66,7 @@ Route::controller(RoleController::class)->group(function(){
     Route::post('role/update', 'updateRole');
     Route::get('role/delete/{id}', 'deleteRole');
 });
+
+
+//checkin/checkout
+Route::post('checkInOut', [CheckinCheckoutController::class, 'check']);
