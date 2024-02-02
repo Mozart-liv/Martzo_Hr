@@ -70,3 +70,4 @@ Route::controller(RoleController::class)->group(function(){
 
 //checkin/checkout
 Route::post('checkInOut', [CheckinCheckoutController::class, 'check']);
+Route::get('checkInOutData/{id}', [CheckinCheckoutController::class, 'checkattend']);
