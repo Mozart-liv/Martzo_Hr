@@ -41,7 +41,7 @@ class CheckinCheckoutController extends Controller
         if(count(CheckinCheckout::where('user_id', $id)->where('date', now()->format('Y-m-d') )->whereNotNull('check_in')->get()->toArray()) > 0){
             $status = true;
 
-        }else{
+        }elseif(count(CheckinCheckout::where('user_id', $id)->where('date', now()->format('Y-m-d') )->whereNotNull('check_out')->get()->toArray()) > 0){
             $status = false;
         }
 
