@@ -67,6 +67,9 @@ export default {
           if (response.data == true) {
             this.check = true;
             this.checkLable = 'checkin';
+          }else{
+            this.check = false;
+            this.checkLable = 'checkout';
           }
         })
         .catch((e) => {

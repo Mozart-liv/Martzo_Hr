@@ -68,6 +68,15 @@ Route::controller(RoleController::class)->group(function(){
 });
 
 
-//checkin/checkout
-Route::post('checkInOut', [CheckinCheckoutController::class, 'check']);
-Route::get('checkInOutData/{id}', [CheckinCheckoutController::class, 'checkattend']);
+//checkin/checkout and attendance crud
+Route::controller(CheckinCheckoutController::class)->group(function(){
+    Route::post('checkInOut', 'check');
+    Route::get('checkInOutData/{id}', 'checkattend');
+    Route::get('attendanceList', 'getAttendance');
+    Route::get('attendance/data', 'getDataforCreatePage');
+    Route::post('attendance/create', 'createAttendance');
+    Route::get('attendance/update/{id}', 'getData');
+    Route::post('attendance/update', 'updateAttendance');
+    Route::get('attendance/delete/{id}', 'deleteAttendance');
+    Route::get('attendance/overview/{month}/{year}', 'attendanceOverview');
+});

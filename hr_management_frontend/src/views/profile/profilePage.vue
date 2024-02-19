@@ -75,7 +75,7 @@
                     </div>
                     <div class="text-end mt-3">
                         <button class="btn btn-primary me-3" @click="update(data.id)">
-                            <i class="fa-solid fa-key"></i>
+                            <i class="fa-solid fa-pencil"></i>
                             Update Profile
                         </button>
                         <button class="btn btn-primary me-3" @click="passwordChgPage(data.id)">

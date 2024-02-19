@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-
+use App\Models\CheckinCheckout;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -24,7 +24,8 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             RoleSeeder::class,
             DepartmentSeeder::class,
-            CompanyseetingSeeder::class
+            CompanyseetingSeeder::class,
+            AttendanceSeeder::class
          ]);
     }
 }

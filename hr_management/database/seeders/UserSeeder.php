@@ -20,5 +20,15 @@ class UserSeeder extends Seeder
             "role_id" => 1,
             "department_id" => 1
         ]);
+
+        User::create([
+            "name" => "mai",
+            "email" => "mai@gmail.com",
+            "password" => Hash::make('mai1234'),
+            "gender" => 'male',
+            "phone" => '091234567',
+            "role_id" => 2,
+            "department_id" => 1
+        ]);
     }
 }

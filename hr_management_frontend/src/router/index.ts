@@ -53,7 +53,7 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("../views/department/UpdateDepartment.vue"),
   },
 
-  //department
+  //role
   {
     path: "/role",
     name: "role",
@@ -68,6 +68,28 @@ const routes: Array<RouteRecordRaw> = [
     path: "/role/update",
     name: "update#role",
     component: () => import("../views/role/UpdateRole.vue"),
+  },
+
+  //attendance management
+  {
+    path: "/attendance",
+    name: "attendance",
+    component: () => import("../views/attendance/AttendancePage.vue"),
+  },
+  {
+    path: "/attendance/create",
+    name: "create#attendance",
+    component: () => import("../views/attendance/CreateAttendance.vue"),
+  },
+  {
+    path: "/attendance/update",
+    name: "update#attendance",
+    component: () => import("../views/attendance/UpdateAttendance.vue"),
+  },
+  {
+    path: "/attendance/overview",
+    name: "attendanceOverview",
+    component: () => import("../views/attendance/AttendanceOverview.vue"),
   },
 
   //profile
