@@ -13,13 +13,18 @@ class CheckinCheckoutController extends Controller
 {
     //
     public function check(Request $request){
-        CheckinCheckout::firstOrCreate([
+        if(now()->format('D') == "Sat" || now()->format('D') == "Sun"){
+            $mes = 'Today is OffDay!';
+            $status = 'false';
+        }else{
+            CheckinCheckout::firstOrCreate([
             'user_id' => $request->user_id,
             'date' => now()->format('Y-m-d'),
         ]);
 
         //check already checkin? if already checkin, do checkout. Or not,do checkin
-        if(count(CheckinCheckout::where('user_id', $request->user_id)->where('date', now()->format('Y-m-d') )->whereNotNull('check_in')->get()->toArray()) == 0){
+
+            if(count(CheckinCheckout::where('user_id', $request->user_id)->where('date', now()->format('Y-m-d') )->whereNotNull('check_in')->get()->toArray()) == 0){
             CheckinCheckout::where('user_id', $request->user_id)->where('date', now()->format('Y-m-d') )->update(['check_in'=> now()]);
             $mes = 'checkin';
             $status = 'true';
@@ -29,9 +34,13 @@ class CheckinCheckoutController extends Controller
             $mes = 'checkout';
             $status = 'true';
         }else{
-            $mes = 'fail';
+            $mes = 'Today attendance is already recorded!';
             $status = 'false';
         }
+        }
+
+
+
 
         logger($status);
 
@@ -57,6 +66,7 @@ class CheckinCheckoutController extends Controller
     public function getAttendance(){
         $data = CheckinCheckout::select('checkin_checkouts.*', 'users.name as user')
                                 ->leftJoin('users', 'users.id', 'checkin_checkouts.user_id')
+                                ->orderBy('id', 'desc')
                                 ->get();
 
         return response()->json($data);

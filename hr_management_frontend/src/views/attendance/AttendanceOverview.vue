@@ -1,7 +1,7 @@
 <template>
   <div>
     <Header></Header>
-    <div class="col-md-8 my-5 mx-auto p-3">
+    <div class="col-md-9 my-5 mx-auto p-3">
       <div class="card mt-3">
         <div class="card-body p-4">
           <v-row>
@@ -40,8 +40,9 @@
                     <th
                       v-for="(period, columnIndex) in periods"
                       :key="columnIndex"
+                      :class="checkOffday(period)"
                     >
-                      {{ period }}
+                      {{ getperiodDate(period) }}
                     </th>
                   </tr>
                 </thead>
@@ -51,8 +52,13 @@
                     <td
                       v-for="(period, columnIndex) in periods"
                       :key="columnIndex"
+                      :class="checkOffday(period)"
                     >
-                      <i :class="condition(attendance[index][columnIndex])"></i>
+                      <i
+                        v-html="
+                          condition(attendance[index][columnIndex], period)
+                        "
+                      ></i>
                     </td>
                   </tr>
                 </tbody>
@@ -73,6 +79,7 @@ import { mapGetters } from "vuex";
 import Header from "../AppHeader.vue";
 import Footer from "../FooterPage.vue";
 import moment from "moment";
+
 export default {
   name: "AttendanceOverView",
   components: {
@@ -156,13 +163,9 @@ export default {
         .then((response) => {
           this.periods = [];
           let data = response.data;
-          for (let i = 0; i < data.periods.length; i++) {
-            this.periods.push(moment(data.periods[i]).format("DD"));
-          }
-
+          this.periods = data.periods;
           this.employees = data.employees;
           this.attendance = data.attendance;
-          console.log(this.attendance);
           this.total = data.length;
           this.loading = false;
         })
@@ -173,19 +176,30 @@ export default {
       for (let i = 5; i >= 0; i--) {
         this.years.push(moment().subtract(i, "years").format("YYYY"));
       }
-
-      console.log(this.years);
     },
-    condition(attendance) {
-      let classes = ["base-class"];
-
-      if (attendance !== "absent") {
-        classes.push("text-success fa-solid fa-circle-check");
-      } else {
-        classes.push("text-danger fa-solid fa-circle-xmark");
+    condition(attendance, period) {
+      if (moment(period).isBefore(moment())) {
+        if (attendance !== "absent") {
+          return `<i class="fa-solid fa-circle-check text-success"></i>`;
+        } else {
+          if(moment(period).format("ddd") !== "Sat" &&
+        moment(period).format("ddd") !== "Sun"){
+          return `<i class="fa-solid fa-circle-xmark text-danger"></i>`;
+        }
+          
+        }
       }
-
-      return classes.join(" ");
+    },
+    getperiodDate(period) {
+      return moment(period).format("DD");
+    },
+    checkOffday(period) {
+      if (
+        moment(period).format("ddd") == "Sat" ||
+        moment(period).format("ddd") == "Sun"
+      ) {
+        return "alert-danger";
+      }
     },
   },
 

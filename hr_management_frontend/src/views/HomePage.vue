@@ -89,7 +89,7 @@ export default {
             Swal.fire({
               icon: "error",
               title: "Oops...",
-              text: "Today Attendence has already recorded!",
+              text: response.data.mes,
             });
           }else{
             if(response.data.mes == 'checkin'){

@@ -19,17 +19,20 @@ class AttendanceSeeder extends Seeder
         //
         $users = User::get();
         foreach($users as $user){
-            $periods =new CarbonPeriod('2023-01-01', '2024-03-30');
+            $periods =new CarbonPeriod('2023-01-01', '2024-01-30');
             foreach($periods as $period){
-                $data = [
-                    'user_id' => $user->id,
-                    'date' => $period->format('Y-m-d'),
-                    'check_in' => Carbon::parse('09:00:00')->subMinutes(rand(1,55)),
-                    'check_out' => Carbon::parse('17:00:00')->subMinutes(rand(1,55)),
+                if($period->format('D') !== "Sat" && $period->format('D') !== "Sun"){
+                    $data = [
+                        'user_id' => $user->id,
+                        'date' => $period->format('Y-m-d'),
+                        'check_in' => Carbon::parse('09:00:00')->subMinutes(rand(1,55)),
+                        'check_out' => Carbon::parse('17:00:00')->subMinutes(rand(1,55)),
 
-                ];
+                    ];
 
-                CheckinCheckout::create($data);
+                    CheckinCheckout::create($data);
+
+                }
             }
         }
 
