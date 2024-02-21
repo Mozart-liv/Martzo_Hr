@@ -70,6 +70,23 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("../views/role/UpdateRole.vue"),
   },
 
+  //salary
+  {
+    path: "/salary",
+    name: "salary",
+    component: () => import("../views/salary/SalaryPage.vue"),
+  },
+  {
+    path: "/salary/create",
+    name: "create#salary",
+    component: () => import("../views/salary/CreateSalary.vue"),
+  },
+  {
+    path: "/salary/update",
+    name: "update#salary",
+    component: () => import("../views/salary/UpdateSalary.vue"),
+  },
+
   //attendance management
   {
     path: "/attendance",

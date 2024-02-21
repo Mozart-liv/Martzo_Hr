@@ -1,7 +1,7 @@
 <template>
     <div>
         <Header></Header>
-        <div class="container col-6 my-5">
+        <div class="container col-6 my-15">
             <div class="col-md-6 " onclick="history.back()">
                     <v-icon>mdi-arrow-left-top</v-icon>Back
                 </div>

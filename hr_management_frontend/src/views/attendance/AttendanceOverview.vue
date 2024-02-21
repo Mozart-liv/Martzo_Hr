@@ -1,7 +1,7 @@
 <template>
   <div>
     <Header></Header>
-    <div class="col-md-9 my-5 mx-auto p-3">
+    <div class="col-md-9 my-15 mx-auto p-3">
       <div class="card mt-3">
         <div class="card-body p-4">
           <v-row>
@@ -17,8 +17,8 @@
                   </option>
                 </select>
               </div>
-              <div class="me-3 col-4" @change="getData()">
-                <select v-model="month" class="form-select">
+              <div class="me-3 col-4">
+                <select v-model="month" class="form-select" @change="getData()">
                   <option
                     :value="month.id"
                     v-for="(month, index) in months"
@@ -88,7 +88,6 @@ export default {
   },
   data() {
     return {
-      message: "",
       periods: [],
       employees: [],
       loading: "",
@@ -182,11 +181,12 @@ export default {
         if (attendance !== "absent") {
           return `<i class="fa-solid fa-circle-check text-success"></i>`;
         } else {
-          if(moment(period).format("ddd") !== "Sat" &&
-        moment(period).format("ddd") !== "Sun"){
-          return `<i class="fa-solid fa-circle-xmark text-danger"></i>`;
-        }
-          
+          if (
+            moment(period).format("ddd") !== "Sat" &&
+            moment(period).format("ddd") !== "Sun"
+          ) {
+            return `<i class="fa-solid fa-circle-xmark text-danger"></i>`;
+          }
         }
       }
     },
@@ -204,7 +204,6 @@ export default {
   },
 
   mounted() {
-    this.message = this.$route.query.message;
     this.getData();
   },
 };

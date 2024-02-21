@@ -4,7 +4,7 @@
     <div class="col-md-8 my-15 mx-auto p-3">
       <button class="btn btn-primary" @click="goCreate()">
         <i class="fa-regular fa-square-plus"></i>
-        Add Attendance
+        Add Salary
       </button>
       <div class="card mt-3">
         <div class="card-body p-4">
@@ -26,7 +26,7 @@
               <v-data-table
                 :headers="headers"
                 :items="items"
-                :items-length="total"
+                :items-length="totalItems"
                 :search="search"
                 :items-per-page="itemsPerPage"
                 class="p-3 elevation-1"
@@ -63,8 +63,9 @@ import { mapGetters } from "vuex";
 import Header from "../AppHeader.vue";
 import Footer from "../FooterPage.vue";
 import Swal from "sweetalert2";
+import moment from "moment";
 export default {
-  name: "AttendancePage",
+  name: "EmployeePage",
   components: {
     Header,
     Footer,
@@ -74,11 +75,11 @@ export default {
       message: "",
       search: "",
       headers: [
-        { title: "Employee", value: "user" },
-        { title: "Date", value: "date" },
-        { title: "Check in", value: "check_in" },
-        { title: "Check out", value: "check_out" },
-        { title: "Action", value: "actions" },
+        { title: "Employee", value: "name" },
+        { title: "Year", value: "year" },
+        { title: "Month", value: "month" },
+        { title: "Amount", value: "amount" },
+        { title: "Actions", value: "actions" },
       ],
       items: [],
       loading: "",
@@ -93,9 +94,14 @@ export default {
     getData() {
       this.loading = true;
       axios
-        .get("http://localhost:8000/api/attendanceList")
+        .get("http://localhost:8000/api/salaryList")
         .then((response) => {
           let data = response.data;
+
+          for (let i = 0; i < data.length; i++) {
+            data[i].month = moment(data[i].month).format("MMM");
+            data[i].amount = data[i].amount + " Ks";
+          }
           console.log(data);
           this.items = data;
           this.total = data.length;
@@ -107,7 +113,7 @@ export default {
     },
     goCreate() {
       this.$router.push({
-        name: "create#attendance",
+        name: "create#salary",
       });
     },
     messageAlert(mes) {
@@ -122,13 +128,14 @@ export default {
     },
     updatePage(id) {
       this.$router.push({
-        name: "update#attendance",
+        name: "update#salary",
         query: {
           id: id,
         },
       });
     },
     deleteData(id) {
+      console.log(id);
       Swal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
@@ -140,7 +147,7 @@ export default {
       }).then((result) => {
         if (result.isConfirmed) {
           axios
-            .get("http://localhost:8000/api/attendance/delete/" + id)
+            .get("http://localhost:8000/api/salary/delete/" + id)
             .then((response) => {
               console.log(response);
               Swal.fire({

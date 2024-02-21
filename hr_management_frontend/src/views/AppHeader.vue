@@ -3,7 +3,7 @@
     <div id="wrapper" :class="{ toggled: isClose }">
       <div id="page-content-wrapper">
         <div
-          class="header-menu position-sticky top-0 z-2 bg-white py-1 shadow-sm"
+          class="header-menu position-fixed w-100 top-0 z-2 bg-white py-1 shadow-sm"
         >
           <div class="row justify-content-center">
             <div class="col-md-8 d-flex justify-content-between p-2">
@@ -63,6 +63,12 @@
               <i class="fa-solid fa-database me-3"></i>Role Mangement
             </li>
             <li
+              @click="salary()"
+              v-if="userInfo.role_id == 1 || userInfo.role_id == 2"
+            >
+              <i class="fa-solid fa-database me-3"></i>Salary Mangement
+            </li>
+            <li
               @click="attendance()"
               v-if="userInfo.role_id == 1 || userInfo.role_id == 2"
             >
@@ -118,14 +124,19 @@ export default {
         name: "role",
       });
     },
+    salary() {
+      this.$router.push({
+        name: "salary",
+      });
+    },
     attendance() {
       this.$router.push({
         name: "attendance",
       });
     },
-    attendanceOverview(){
+    attendanceOverview() {
       this.$router.push({
-        name: "attendanceOverview"
+        name: "attendanceOverview",
       });
     },
     toggle() {

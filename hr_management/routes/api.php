@@ -6,7 +6,9 @@ use App\Http\Controllers\CompanysettingController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SalaryController;
 use App\Models\Department;
+use App\Models\Salary;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -73,10 +75,23 @@ Route::controller(CheckinCheckoutController::class)->group(function(){
     Route::post('checkInOut', 'check');
     Route::get('checkInOutData/{id}', 'checkattend');
     Route::get('attendanceList', 'getAttendance');
+    Route::get('attendanceList/user/{id}', 'getUserAttendance');
     Route::get('attendance/data', 'getDataforCreatePage');
     Route::post('attendance/create', 'createAttendance');
     Route::get('attendance/update/{id}', 'getData');
     Route::post('attendance/update', 'updateAttendance');
     Route::get('attendance/delete/{id}', 'deleteAttendance');
     Route::get('attendance/overview/{month}/{year}', 'attendanceOverview');
+    Route::get('attendance/overview/auth/{month}/{year}/{id}', 'attendanceOverviewAuth');
+
+});
+
+//salary
+Route::controller(SalaryController::class)->group(function(){
+    Route::get('salaryList', 'getSalaryList');
+    Route::get('salary/getFormData', 'getFormData');
+    Route::post('salary/create', 'createSalary');
+    Route::get('salary/update/{id}', 'getData');
+    Route::post('salary/update', 'updateSalary');
+    Route::get('salary/delete/{id}', 'deleteSalary');
 });

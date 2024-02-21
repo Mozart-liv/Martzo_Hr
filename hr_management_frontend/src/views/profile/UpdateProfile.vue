@@ -2,7 +2,7 @@
     <div>
         <Header></Header>
         <div class="container">
-            <div class="card my-5 ">
+            <div class="card my-15 ">
                 <div class="card-body p-5">
                     <h1 class="mb-5 text-primary">Update Profile</h1>
                     <form class="text-start row">

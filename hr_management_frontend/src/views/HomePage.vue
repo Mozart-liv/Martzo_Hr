@@ -2,8 +2,8 @@
   <div>
     <Header></Header>
     <h1 v-if="!login">Login please</h1>
-    <div v-else class="col-md-10 mx-auto p-3 my-5">
-      <v-card class="mx-auto p-4 col-md-8" elevation="6">
+    <div v-else class="col-md-10 mx-auto p-3 my-15">
+      <v-card class="mx-auto p-4 col-md-10 mb-5" elevation="6">
         <div class="d-flex flex-row flex-wrap align-center justify-start p-3">
           <div class="me-5">
             <v-avatar size="150">
@@ -25,6 +25,97 @@
           ></v-switch>
         </div>
       </v-card>
+      <v-card class="mx-auto p-4 col-md-10 mb-5" elevation="6">
+        <h3>Overview</h3>
+        <v-row class="mb-5">
+          <v-col class="d-flex justify-content-around">
+            <div class="me-3 col-4">
+              <select
+                v-model="attendanceOverview.year"
+                class="form-select"
+                @change="getData()"
+              >
+                <option
+                  v-for="(year, index) in attendanceOverview.years"
+                  :key="index"
+                >
+                  {{ year }}
+                </option>
+              </select>
+            </div>
+            <div class="me-3 col-4">
+              <select
+                v-model="attendanceOverview.month"
+                class="form-select"
+                @change="getData()"
+              >
+                <option
+                  :value="month.id"
+                  v-for="(month, index) in attendanceOverview.months"
+                  :key="index"
+                >
+                  {{ month.name }}
+                </option>
+              </select>
+            </div>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <v-table>
+              <thead>
+                <tr>
+                  <th
+                    v-for="(period, columnIndex) in attendanceOverview.periods"
+                    :key="columnIndex"
+                    :class="checkOffday(period)"
+                  >
+                    {{ getperiodDate(period) }}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td
+                    v-for="(period, columnIndex) in attendanceOverview.periods"
+                    :key="columnIndex"
+                    :class="checkOffday(period)"
+                  >
+                    <i
+                      v-html="
+                        condition(
+                          attendanceOverview.attendance[columnIndex],
+                          period
+                        )
+                      "
+                    ></i>
+                  </td>
+                </tr>
+              </tbody>
+            </v-table>
+          </v-col>
+        </v-row>
+        <v-row class="mb-3">
+          <v-col>
+            <v-data-table
+              :headers="attendance.headers"
+              :items="attendance.items"
+              :items-length="attendance.total"
+              :items-per-page="attendance.itemsPerPage"
+              class="p-3 elevation-1"
+              :loading="attendance.loading"
+              @update:options="getData"
+            >
+              <!-- action buttons  -->
+              <template v-slot:[`item.actions`]="{ item }">
+                <v-icon small @click="deleteData(item.id)" class="text-danger"
+                  >mdi-delete</v-icon
+                >
+              </template>
+            </v-data-table>
+          </v-col>
+        </v-row>
+      </v-card>
     </div>
     <Footer></Footer>
   </div>
@@ -36,6 +127,7 @@ import Footer from "../views/FooterPage.vue";
 import { mapGetters } from "vuex";
 import axios from "axios";
 import Swal from "sweetalert2";
+import moment from "moment";
 export default {
   name: "HomePage",
   components: {
@@ -46,8 +138,80 @@ export default {
     return {
       login: false,
       check: "",
-      checkLable : "",
+      checkLable: "",
       data: {},
+      attendance: {
+        headers: [
+          { title: "Date", value: "date" },
+          { title: "Check in", value: "check_in" },
+          { title: "Check out", value: "check_out" },
+          { title: "Action", value: "actions" },
+        ],
+        items: [],
+        loading: "",
+        itemsPerPage: 3,
+        total: 0,
+      },
+      attendanceOverview: {
+        periods: [],
+        loading: "",
+        attendance: [],
+        years: [],
+        months: [
+          {
+            id: 1,
+            name: "Jan",
+          },
+          {
+            id: 2,
+            name: "Fed",
+          },
+          {
+            id: 3,
+            name: "Mar",
+          },
+          {
+            id: 4,
+            name: "Apr",
+          },
+          {
+            id: 5,
+            name: "May",
+          },
+          {
+            id: 6,
+            name: "Jun",
+          },
+          {
+            id: 7,
+            name: "Jul",
+          },
+          {
+            id: 8,
+            name: "Aug",
+          },
+          {
+            id: 9,
+            name: "Sep",
+          },
+          {
+            id: 10,
+            name: "Oct",
+          },
+          {
+            id: 11,
+            name: "Nov",
+          },
+          {
+            id: 12,
+            name: "Dec",
+          },
+        ],
+        month: moment().format("M"),
+        year: moment().format("YYYY"),
+        itemsPerPage: 5,
+        total: 0,
+      },
     };
   },
   computed: {
@@ -66,10 +230,10 @@ export default {
         .then((response) => {
           if (response.data == true) {
             this.check = true;
-            this.checkLable = 'checkin';
-          }else{
+            this.checkLable = "checkin";
+          } else {
             this.check = false;
-            this.checkLable = 'checkout';
+            this.checkLable = "checkout";
           }
         })
         .catch((e) => {
@@ -91,11 +255,11 @@ export default {
               title: "Oops...",
               text: response.data.mes,
             });
-          }else{
-            if(response.data.mes == 'checkin'){
-                this.checkLable = 'checkin';
-            }else{
-                this.checkLable = 'checkout';
+          } else {
+            if (response.data.mes == "checkin") {
+              this.checkLable = "checkin";
+            } else {
+              this.checkLable = "checkout";
             }
           }
         })
@@ -119,6 +283,99 @@ export default {
         .catch((e) => {
           console.log(e);
         });
+
+      //get attendance
+      axios
+        .get(
+          "http://localhost:8000/api/attendanceList/user/" + this.userInfo.id
+        )
+        .then((response) => {
+          let data = response.data;
+          console.log(data);
+          this.attendance.items = data;
+          this.attendance.total = data.length;
+          this.attendance.loading = false;
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+
+      //get attendance overview
+      this.attendanceOverview.loading = true;
+      axios
+        .get(
+          `http://localhost:8000/api/attendance/overview/auth/${this.attendanceOverview.month}/${this.attendanceOverview.year}/${this.userInfo.id}`
+        )
+        .then((response) => {
+          this.attendanceOverview.periods = [];
+          let data = response.data;
+          this.attendanceOverview.periods = data.periods;
+          this.attendanceOverview.attendance = data.attendance;
+          this.attendanceOverview.total = data.length;
+          this.attendanceOverview.loading = false;
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+      this.attendanceOverview.years = [];
+      for (let i = 5; i >= 0; i--) {
+        this.attendanceOverview.years.push(
+          moment().subtract(i, "years").format("YYYY")
+        );
+      }
+    },
+    condition(attendance, period) {
+      if (moment(period).isBefore(moment())) {
+        if (attendance !== "absent") {
+          return `<i class="fa-solid fa-circle-check text-success"></i>`;
+        } else {
+          if (
+            moment(period).format("ddd") !== "Sat" &&
+            moment(period).format("ddd") !== "Sun"
+          ) {
+            return `<i class="fa-solid fa-circle-xmark text-danger"></i>`;
+          }
+        }
+      }
+    },
+    getperiodDate(period) {
+      return moment(period).format("DD");
+    },
+    checkOffday(period) {
+      if (
+        moment(period).format("ddd") == "Sat" ||
+        moment(period).format("ddd") == "Sun"
+      ) {
+        return "alert-danger";
+      }
+    },
+    deleteData(id) {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios
+            .get("http://localhost:8000/api/attendance/delete/" + id)
+            .then((response) => {
+              console.log(response);
+              Swal.fire({
+                title: "Deleted!",
+                text: response.data,
+                icon: "success",
+              });
+              this.getData();
+            })
+            .catch((e) => {
+              console.log(e);
+            });
+        }
+      });
     },
   },
   mounted() {
