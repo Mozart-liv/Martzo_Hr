@@ -80,6 +80,12 @@
             >
               <i class="fa-solid fa-database me-3"></i>Attendance Overview
             </li>
+            <li
+              @click="payroll()"
+              v-if="userInfo.role_id == 1 || userInfo.role_id == 2"
+            >
+              <i class="fa-solid fa-database me-3"></i>Payroll
+            </li>
             <li><i class="fa-solid fa-house me-3"></i>Events</li>
             <li>Team</li>
             <li>Services</li>
@@ -137,6 +143,11 @@ export default {
     attendanceOverview() {
       this.$router.push({
         name: "attendanceOverview",
+      });
+    },
+    payroll() {
+      this.$router.push({
+        name: "payroll",
       });
     },
     toggle() {

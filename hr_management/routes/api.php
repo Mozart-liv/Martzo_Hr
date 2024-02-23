@@ -5,6 +5,8 @@ use App\Http\Controllers\CheckinCheckoutController;
 use App\Http\Controllers\CompanysettingController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\PayrollController;
+use App\Http\Controllers\RecordController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SalaryController;
 use App\Models\Department;
@@ -82,7 +84,6 @@ Route::controller(CheckinCheckoutController::class)->group(function(){
     Route::post('attendance/update', 'updateAttendance');
     Route::get('attendance/delete/{id}', 'deleteAttendance');
     Route::get('attendance/overview/{month}/{year}', 'attendanceOverview');
-    Route::get('attendance/overview/auth/{month}/{year}/{id}', 'attendanceOverviewAuth');
 
 });
 
@@ -95,3 +96,9 @@ Route::controller(SalaryController::class)->group(function(){
     Route::post('salary/update', 'updateSalary');
     Route::get('salary/delete/{id}', 'deleteSalary');
 });
+
+//Payroll
+Route::get('payroll/{month}/{year}',[ PayrollController::class, 'getPayroll']);
+
+//get each records data
+Route::get('records/{month}/{year}/{id}', [RecordController::class, 'getRecords']);

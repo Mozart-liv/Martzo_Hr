@@ -36,10 +36,17 @@ class SalaryController extends Controller
             'month' => $request->month,
             'amount' => $request->amount
         ];
-        Salary::create($data);
+        $check = Salary::where('user_id', $request->user_id)->where('year', $request->year)->where('month', $request->month)->first();
+        if($check){
+            $message = 'This Data is already recordes';
+            $status = false;
+        }else{
+            Salary::create($data);
 
-        $message = 'Salary added successfully';
-        $status = true;
+            $message = 'Salary added successfully';
+            $status = true;
+        }
+
         return response()->json([
             'message' => $message,
             'status' => $status
@@ -62,12 +69,15 @@ class SalaryController extends Controller
             'amount' => $request->amount
         ];
 
-        if(Salary::where('id', $request->id)->update($data)){
-             $message = 'Salary successfully updated!';
-            $status = true;
-        }else{
-             $message = 'Salary updated fail!';
+        $check = Salary::where('user_id', $request->user_id)->where('year', $request->year)->where('month', $request->month)->first();
+        if($check){
+            $message = 'This Data is already recordes';
             $status = false;
+        }else{
+            Salary::where('id', $request->id)->update($data);
+
+            $message = 'Salary updated successfully!';
+            $status = true;
         }
 
         return response()->json([

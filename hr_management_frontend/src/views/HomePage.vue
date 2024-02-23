@@ -2,8 +2,8 @@
   <div>
     <Header></Header>
     <h1 v-if="!login">Login please</h1>
-    <div v-else class="col-md-10 mx-auto p-3 my-15">
-      <v-card class="mx-auto p-4 col-md-10 mb-5" elevation="6">
+    <div v-else class="col-md-11 mx-auto p-3 my-15">
+      <v-card class="mx-auto p-4 col-md-8 mb-10" elevation="6">
         <div class="d-flex flex-row flex-wrap align-center justify-start p-3">
           <div class="me-5">
             <v-avatar size="150">
@@ -25,8 +25,8 @@
           ></v-switch>
         </div>
       </v-card>
-      <v-card class="mx-auto p-4 col-md-10 mb-5" elevation="6">
-        <h3>Overview</h3>
+      <v-card class="mx-auto p-5 col-md-11 mb-5" elevation="6">
+        <h3>Records</h3>
         <v-row class="mb-5">
           <v-col class="d-flex justify-content-around">
             <div class="me-3 col-4">
@@ -60,7 +60,7 @@
             </div>
           </v-col>
         </v-row>
-        <v-row>
+        <v-row class="mb-5">
           <v-col>
             <v-table>
               <thead>
@@ -113,6 +113,56 @@
                 >
               </template>
             </v-data-table>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <v-table>
+              <thead>
+                <tr>
+                  <th class="text-center">Days of Month</th>
+                  <th class="text-center">Working Days</th>
+                  <th class="text-center">Off Days</th>
+                  <th class="text-center">Present days</th>
+                  <th class="text-center">Absent Days</th>
+                  <th class="text-center">Per Day(MMK)</th>
+                  <th class="text-center">Total(MMK)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="text-center">
+                    {{ attendanceOverview.periods.length }}
+                  </td>
+                  <td class="text-center">{{ payroll.workingDays }}</td>
+                  <td class="text-center">
+                    {{
+                      attendanceOverview.periods.length - payroll.workingDays
+                    }}
+                  </td>
+                  <td class="text-center">
+                    {{ payroll.present }}
+                  </td>
+                  <td class="text-center">
+                    {{
+                      payroll.absent -
+                      (attendanceOverview.periods.length - payroll.workingDays)
+                    }}
+                  </td>
+                  <td class="text-center">
+                      {{ salary(payroll.salaries, "perDay") }}
+                    </td>
+                    <td class="text-center">
+                      {{
+                        salary(
+                          payroll.salaries,
+                          payroll.present
+                        )
+                      }}
+                    </td>
+                </tr>
+              </tbody>
+            </v-table>
           </v-col>
         </v-row>
       </v-card>
@@ -212,6 +262,12 @@ export default {
         itemsPerPage: 5,
         total: 0,
       },
+      payroll: {
+        workingDays: "",
+        salaries: [],
+        present: 0,
+        absent: 0,
+      },
     };
   },
   computed: {
@@ -284,35 +340,28 @@ export default {
           console.log(e);
         });
 
-      //get attendance
-      axios
-        .get(
-          "http://localhost:8000/api/attendanceList/user/" + this.userInfo.id
-        )
-        .then((response) => {
-          let data = response.data;
-          console.log(data);
-          this.attendance.items = data;
-          this.attendance.total = data.length;
-          this.attendance.loading = false;
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-
       //get attendance overview
       this.attendanceOverview.loading = true;
       axios
         .get(
-          `http://localhost:8000/api/attendance/overview/auth/${this.attendanceOverview.month}/${this.attendanceOverview.year}/${this.userInfo.id}`
+          `http://localhost:8000/api/records/${this.attendanceOverview.month}/${this.attendanceOverview.year}/${this.userInfo.id}`
         )
         .then((response) => {
           this.attendanceOverview.periods = [];
           let data = response.data;
+          this.attendance.items = data.records;
+          this.attendance.total = data.records.length;
+          this.attendance.loading = false;
           this.attendanceOverview.periods = data.periods;
           this.attendanceOverview.attendance = data.attendance;
+
           this.attendanceOverview.total = data.length;
           this.attendanceOverview.loading = false;
+          this.payroll.salaries = data.salaries;
+          this.payroll.workingDays = data.workingDays;
+          this.payroll.present = data.attendForPayroll[0].length;
+          this.payroll.absent = data.attendForPayroll[1].length;
+          console.log(this.payroll.salaries);
         })
         .catch((e) => {
           console.log(e);
@@ -376,6 +425,19 @@ export default {
             });
         }
       });
+    },
+    salary(salaries, status) {
+      if (salaries) {
+            if (status == "perDay") {
+              return Number(
+                salaries.amount / this.payroll.workingDays
+              ).toLocaleString();
+            } else {
+              return Number(
+                (salaries.amount / this.payroll.workingDays) * status
+              ).toLocaleString();
+            }
+      }
     },
   },
   mounted() {

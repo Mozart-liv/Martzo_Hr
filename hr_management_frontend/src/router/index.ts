@@ -109,6 +109,13 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("../views/attendance/AttendanceOverview.vue"),
   },
 
+  //payroll
+  {
+    path: "/payroll",
+    name: "payroll",
+    component: () => import("../views/Payroll.vue"),
+  },
+
   //profile
   {
     path: "/profile",

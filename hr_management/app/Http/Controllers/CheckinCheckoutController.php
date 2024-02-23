@@ -72,13 +72,6 @@ class CheckinCheckoutController extends Controller
         return response()->json($data);
     }
 
-    //get user attendance
-    public function getUserAttendance($id){
-        $userAtt = CheckinCheckout::where('user_id', $id)->orderBy('id', 'desc')->get();
-
-        return response()->json($userAtt);
-    }
-
     //get data for create page
     public function getDataforCreatePage(){
         $employee = User::get();
@@ -187,31 +180,6 @@ class CheckinCheckoutController extends Controller
         'periods' => $periods,
         'employees' => $employees,
         'attendance' => $all
-       ]);
-    }
-
-     //get attendance overview for auth user
-    public function attendanceOverviewAuth($month, $year, $id){
-        $startofMonth = Carbon::parse($year. '-'. $month . '-' . '01');
-        $endofMonth = Carbon::parse($startofMonth)->endOfMonth()->format('Y-m-d');
-        $periods = new CarbonPeriod($startofMonth, $endofMonth);
-        $attendance = [];
-            foreach($periods as $period){
-                $att = CheckinCheckout::whereMonth('date', $month)->whereYear('date', $year)->where('user_id', $id)->where('date', $period)->first();
-
-                if($att){
-                    array_push($attendance, $att);
-                }else{
-                   array_push($attendance, 'absent');
-                }
-
-            }
-
-
-
-       return response()->json([
-        'periods' => $periods,
-        'attendance' => $attendance
        ]);
     }
 

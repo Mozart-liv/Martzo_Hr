@@ -65,7 +65,7 @@ import Footer from "../FooterPage.vue";
 import Swal from "sweetalert2";
 import moment from "moment";
 export default {
-  name: "EmployeePage",
+  name: "SalaryPage",
   components: {
     Header,
     Footer,

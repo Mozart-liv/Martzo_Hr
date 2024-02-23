@@ -74,6 +74,10 @@
                 ADD
               </button>
             </div>
+
+            <div v-if="errors.message" class="text-danger">
+                {{ errors.message }}
+            </div>
           </form>
         </div>
       </div>
@@ -184,6 +188,8 @@ export default {
                 message: response.data.message,
               },
             });
+          }else{
+            this.errors.message = response.data.message;
           }
         })
         .catch((e) => {
