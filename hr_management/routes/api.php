@@ -6,6 +6,7 @@ use App\Http\Controllers\CompanysettingController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\PayrollController;
+use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\RecordController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SalaryController;
@@ -102,3 +103,10 @@ Route::get('payroll/{month}/{year}',[ PayrollController::class, 'getPayroll']);
 
 //get each records data
 Route::get('records/{month}/{year}/{id}', [RecordController::class, 'getRecords']);
+
+//projects
+Route::controller(ProjectController::class)->group(function(){
+    Route::get('projectList', 'getProjectList');
+    Route::post('project/create', 'createProject');
+    Route::get('project/update/{id}', 'getProjectData');
+});

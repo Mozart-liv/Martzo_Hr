@@ -144,6 +144,18 @@ const routes: Array<RouteRecordRaw> = [
     name: "update#company",
     component: () => import("../views/companySetting/UpdateCompanySetting.vue"),
   },
+
+  //project
+   {
+    path: "/project",
+    name: "project",
+    component: () => import("../views/project/ProjectPage.vue"),
+  },
+  {
+    path: "/project/create",
+    name: "create#project",
+    component: () => import("../views/project/CreateProject.vue"),
+  }
 ];
 
 

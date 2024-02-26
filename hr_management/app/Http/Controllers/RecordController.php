@@ -19,7 +19,6 @@ class RecordController extends Controller
         $periods = new CarbonPeriod($startofMonth, $endofMonth);
          $workingDays = 0;
         foreach($periods as $period){
-            logger($period->shortEnglishDayOfWeek);
              if($period->shortEnglishDayOfWeek !== 'Sat' && $period->shortEnglishDayOfWeek !== 'Sun'){
                 $workingDays += 1;
             };

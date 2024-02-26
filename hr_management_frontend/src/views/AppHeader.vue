@@ -81,6 +81,12 @@
               <i class="fa-solid fa-database me-3"></i>Attendance Overview
             </li>
             <li
+              @click="project()"
+              v-if="userInfo.role_id == 1 || userInfo.role_id == 2"
+            >
+              <i class="fa-solid fa-database me-3"></i>PRoject Mangement
+            </li>
+            <li
               @click="payroll()"
               v-if="userInfo.role_id == 1 || userInfo.role_id == 2"
             >
@@ -148,6 +154,11 @@ export default {
     payroll() {
       this.$router.push({
         name: "payroll",
+      });
+    },
+    project() {
+      this.$router.push({
+        name: "project",
       });
     },
     toggle() {
