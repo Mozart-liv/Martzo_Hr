@@ -215,7 +215,7 @@ export default {
     },
     detailPage(id) {
       this.$router.push({
-        name: "employeeDetail",
+        name: "detail#project",
         query: {
           id: id,
         },
@@ -233,7 +233,7 @@ export default {
       }).then((result) => {
         if (result.isConfirmed) {
           axios
-            .get("http://localhost:8000/api/employee/delete/" + id)
+            .get("http://localhost:8000/api/project/delete/" + id)
             .then((response) => {
               console.log(response);
               Swal.fire({

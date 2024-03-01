@@ -6,7 +6,7 @@
           class="header-menu position-fixed w-100 top-0 z-2 bg-white py-1 shadow-sm"
         >
           <div class="row justify-content-center">
-            <div class="col-md-8 d-flex justify-content-between p-2">
+            <div class="col-md-10 d-flex justify-content-between p-2">
               <button
                 @click="toggle()"
                 type="button"

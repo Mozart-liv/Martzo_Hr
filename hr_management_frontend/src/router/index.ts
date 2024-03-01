@@ -146,7 +146,7 @@ const routes: Array<RouteRecordRaw> = [
   },
 
   //project
-   {
+  {
     path: "/project",
     name: "project",
     component: () => import("../views/project/ProjectPage.vue"),
@@ -155,7 +155,17 @@ const routes: Array<RouteRecordRaw> = [
     path: "/project/create",
     name: "create#project",
     component: () => import("../views/project/CreateProject.vue"),
-  }
+  },
+  {
+    path: "/project/update",
+    name: "update#project",
+    component: () => import("../views/project/UpdateProject.vue"),
+  },
+  {
+    path: "/project/detail",
+    name: "detail#project",
+    component: () => import("../views/project/ProjectDetail.vue"),
+  },
 ];
 
 

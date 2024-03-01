@@ -212,6 +212,8 @@ export default {
         if (!allow.includes(file.type)) {
           this.errors.img =
             "Invalid file type. Only jpeg, png, and jpg are allowed.";
+        } else if (file.size > 500000) {
+          this.errors.img = "Image size too large. Maximum size is 500KB.";
         } else {
           this.errors.img = null;
           this.data.img = [];
@@ -219,7 +221,6 @@ export default {
         }
       }
 
-      console.log(this.data.img.length);
     },
 
     fileInput() {
@@ -232,7 +233,7 @@ export default {
         if (allow.includes(file.type)) {
           this.errors.files =
             "Invalid file type.jpeg, png, and jpg are do not allowed.";
-        } else if (file.size > 5000000) {
+        } else if (file.size > 500000) {
           this.errors.files = "File size too large. Maximum size is 500KB.";
         } else {
           this.errors.files = null;
@@ -243,7 +244,6 @@ export default {
     },
     //post data to backend
     createEmployee() {
-      console.log(this.data);
       const form = new FormData();
       form.append("title", this.data.title);
       form.append("desc", this.data.desc);

@@ -109,4 +109,9 @@ Route::controller(ProjectController::class)->group(function(){
     Route::get('projectList', 'getProjectList');
     Route::post('project/create', 'createProject');
     Route::get('project/update/{id}', 'getProjectData');
+    Route::post('project/update', 'updateProject');
+    Route::get('project/detail/{id}', 'getProjectDetail');
+    Route::get('project/delete/{id}', 'deleteProject');
+    Route::get('project/member/delete/{id}', 'deleteProjectMember');
+    Route::get('project/item/delete/{id}/{itemName}/{type}', 'deleteProjectItem');
 });
