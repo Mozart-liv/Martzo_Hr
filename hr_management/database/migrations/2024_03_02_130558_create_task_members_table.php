@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('project_members', function (Blueprint $table) {
+        Schema::create('task_members', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('project_id');
+             $table->bigInteger('task_id');
             $table->bigInteger('user_id');
-            $table->enum('role', ['leader', 'member']);
             $table->timestamps();
         });
     }
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('project_members');
+        Schema::dropIfExists('task_members');
     }
 };

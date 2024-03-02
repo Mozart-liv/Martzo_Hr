@@ -11,11 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('project_members', function (Blueprint $table) {
+        Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('project_id');
-            $table->bigInteger('user_id');
-            $table->enum('role', ['leader', 'member']);
+            $table->string('title');
+            $table->text('description');
+             $table->date('start_date');
+            $table->date('deadline');
+            $table->enum('priority', ['low', 'medium', 'high'])->default('low');
+            $table->enum('status', ['pending', 'in_progress', 'done'])->default('pending');
             $table->timestamps();
         });
     }
@@ -25,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('project_members');
+        Schema::dropIfExists('tasks');
     }
 };

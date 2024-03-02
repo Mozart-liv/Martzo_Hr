@@ -114,4 +114,10 @@ Route::controller(ProjectController::class)->group(function(){
     Route::get('project/delete/{id}', 'deleteProject');
     Route::get('project/member/delete/{id}', 'deleteProjectMember');
     Route::get('project/item/delete/{id}/{itemName}/{type}', 'deleteProjectItem');
+
+    //for auth user
+    Route::get('myprojectList/{id}', 'getmyPorjects');
+
 });
+
+

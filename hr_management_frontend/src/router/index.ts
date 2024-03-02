@@ -166,6 +166,12 @@ const routes: Array<RouteRecordRaw> = [
     name: "detail#project",
     component: () => import("../views/project/ProjectDetail.vue"),
   },
+  //for auth
+  {
+    path: "/myProject",
+    name: "myProject",
+    component: () => import("../views/project/MyProjectPage.vue"),
+  },
 ];
 
 

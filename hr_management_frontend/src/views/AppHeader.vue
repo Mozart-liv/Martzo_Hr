@@ -39,16 +39,10 @@
               </div>
             </div>
             <li
-              @click="home()"
-              v-if="userInfo.role_id == 1 || userInfo.role_id == 2"
-            >
-              <i class="fa-solid fa-house me-3"></i>Home
-            </li>
-            <li
               @click="employee()"
               v-if="userInfo.role_id == 1 || userInfo.role_id == 2"
             >
-              <i class="fa-solid fa-users me-3"></i>Employees Management
+              <i class="fa-solid fa-users me-3"></i>Employees
             </li>
             <li
               @click="department()"
@@ -116,11 +110,6 @@ export default {
     ...mapGetters(["userInfo", "getToken"]),
   },
   methods: {
-    home() {
-      this.$router.push({
-        name: "home",
-      });
-    },
     employee() {
       this.$router.push({
         name: "employee",

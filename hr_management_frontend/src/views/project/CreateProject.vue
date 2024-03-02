@@ -212,8 +212,8 @@ export default {
         if (!allow.includes(file.type)) {
           this.errors.img =
             "Invalid file type. Only jpeg, png, and jpg are allowed.";
-        } else if (file.size > 500000) {
-          this.errors.img = "Image size too large. Maximum size is 500KB.";
+        } else if (file.size > 5000000) {
+          this.errors.img = "Image size too large. Maximum size is 5MB.";
         } else {
           this.errors.img = null;
           this.data.img = [];

@@ -2,10 +2,6 @@
   <div>
     <Header></Header>
     <div class="col-md-10 my-15 mx-auto p-3">
-      <button class="btn btn-primary" @click="goCreate()">
-        <i class="fa-regular fa-square-plus"></i>
-        Create Project
-      </button>
       <div class="card mt-3">
         <div class="card-body p-4">
           <v-row>
@@ -73,9 +69,9 @@
                     <v-chip
                       :color="
                         item.status == 'pending'
-                          ? 'orange'
+                          ? 'gray'
                           : item.status == 'in_progress'
-                          ? 'blue'
+                          ? 'orange'
                           : 'green'
                       "
                       :text="item.status"
@@ -93,16 +89,6 @@
                     @click="detailPage(item.id)"
                     class="me-1 text-primary"
                     >mdi-information-outline</v-icon
-                  >
-                  <v-icon small @click="updatePage(item.id)" class="me-1"
-                    >mdi-pencil</v-icon
-                  >
-                  <v-icon
-                    small
-                    @click="deleteData(item.id)"
-                    v-if="userInfo.role_id == 1"
-                    class="me-1 text-danger"
-                    >mdi-delete</v-icon
                   >
                 </template>
               </v-data-table>
@@ -123,7 +109,7 @@ import Header from "../AppHeader.vue";
 import Footer from "../FooterPage.vue";
 import Swal from "sweetalert2";
 export default {
-  name: "ProjectPage",
+  name: "MyProjectPage",
   components: {
     Header,
     Footer,
@@ -156,7 +142,7 @@ export default {
     getData() {
       this.loading = true;
       axios
-        .get("http://localhost:8000/api/projectList")
+        .get("http://localhost:8000/api/myprojectList/" + this.userInfo.id)
         .then((response) => {
           let data = response.data;
           this.items = data.projects;
@@ -182,7 +168,6 @@ export default {
             }
           }
 
-          console.log(this.items);
           this.total = this.items.length;
           this.loading = false;
         })

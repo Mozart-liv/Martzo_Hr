@@ -140,7 +140,6 @@ class EmployeeController extends Controller
     //validate
     private function Validation($request){
         Validator::make($request->all(), [
-            'employee_id' => 'required|unique:users,employee_id',
             'name' => 'required',
             'email' => 'required|unique:users,email',
             'password' => 'required|min:6',
@@ -158,7 +157,6 @@ class EmployeeController extends Controller
     //update validation
     private function updateVal($request, $id){
         Validator::make($request->all(), [
-            'employee_id' => 'required|unique:users,employee_id,' . $id,
             'name' => 'required',
             'email' => 'required|unique:users,email,' . $id,
             'phone' => 'required|min:9',

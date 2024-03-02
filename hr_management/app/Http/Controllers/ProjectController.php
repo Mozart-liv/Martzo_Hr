@@ -232,7 +232,7 @@ class ProjectController extends Controller
     public function getProjectDetail($id){
          $project = Project::where('id', $id)->first();
 
-            $teamMembers = ProjectMember::select('project_members.*', 'users.img as img')
+            $teamMembers = ProjectMember::select('project_members.*', 'users.img as img' , 'users.name as name')
                                 ->where('project_id', $project->id)
                                 ->leftJoin('users','users.id', 'project_members.user_id')
                                 ->get();
@@ -243,6 +243,27 @@ class ProjectController extends Controller
             'teamMembers' => $teamMembers,
             'status' => true
         ]);
+    }
+
+    //get auth user's project
+    public function getmyPorjects($id){
+        $projects = ProjectMember::where('user_id', $id)->get();
+        $projectList = [];
+        foreach($projects as $project){
+            $pjItem = Project::where('id', $project->project_id)->first();
+
+            array_push($projectList, $pjItem);
+        }
+
+        $projectMembers = [];
+        foreach($projectList as $project){
+            $member = ProjectMember::select('project_members.*', 'users.img as img')
+                                ->where('project_id', $project->id)
+                                ->leftJoin('users','users.id', 'project_members.user_id')
+                                ->get();
+            array_push($projectMembers, $member);
+        }
+        return response()->json(['projects' => $projectList, 'projectMembers' => $projectMembers]);
     }
 
     //validate

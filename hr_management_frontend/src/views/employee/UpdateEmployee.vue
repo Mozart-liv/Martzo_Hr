@@ -191,7 +191,7 @@
                 axios.post("http://localhost:8000/api/employee/update", form).then((response)=>{
                     if(response.data.status == true){
                     this.$router.push({
-                        name: 'project',
+                        name: 'employee',
                         query : {
                             message : response.data.message
                         }
