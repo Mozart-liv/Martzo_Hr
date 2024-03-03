@@ -130,46 +130,65 @@
       </div>
       <div class="row mt-5">
         <div class="col-md-4 mb-1">
-          <div class="card">
+          <div
+            class="card"
+            @dragover.prevent="dragOver"
+            @drop="dropToBoard('pending')"
+          >
             <div class="card-header bg-warning">
               <i class="fa-solid fa-bars"></i> Pending
             </div>
             <div class="card-body alert-warning">
-              <div class="item mb-2 bg-white p-3 rounded">
+              <div
+                class="item mb-2 bg-white p-2 rounded"
+                v-for="(task, index) in filterTask('pending')"
+                :key="index"
+                :draggable="true"
+                @dragstart="dragStart(task.id)"
+              >
                 <div class="d-flex mb-2 justify-content-between">
-                  <h5 class="text-dark">Title</h5>
-                  <i class="fa-solid fa-ellipsis-vertical text-dark"></i>
+                  <b class="text-dark">{{ task.title }}</b>
+                  <div class="">
+                    <i
+                      class="fa-solid fa-pen me-2 text-dark"
+                      @click="openDialog('update', task.id)"
+                    ></i>
+                    <i
+                      class="fa-solid fa-trash text-danger"
+                      @click="deleteData(task.id)"
+                    ></i>
+                  </div>
                 </div>
 
                 <div class="d-flex justify-content-between align-bottom">
                   <div class="col-md-9">
                     <div class="">
                       <i class="fa-regular fa-clock"></i>
-                      Deadline : 23-4-2023
+                      Deadline : {{ task.deadline }}
                     </div>
                     <v-chip
                       :color="
-                        project.priority == 'low'
+                        task.priority == 'low'
                           ? 'green'
-                          : project.priority == 'medium'
+                          : task.priority == 'medium'
                           ? 'orange'
                           : 'red'
                       "
-                      :text="project.priority"
+                      :text="task.priority"
                       class="text-uppercase me-3"
                       label
                       size="small"
                     ></v-chip>
                   </div>
-                  <div v-for="(member, index) in team.members" :key="index">
-                    <v-avatar :image="member.img" size="x-small"> </v-avatar>
+                  <div v-for="(member, index) in task.members" :key="index">
+                    <v-avatar :image="member" size="x-small"> </v-avatar>
                   </div>
                 </div>
               </div>
 
               <div
                 class="btn bg-white mt-3 w-100"
-                @click="openDialog('pending')"
+                @click="openDialog('add', 'pending')"
               >
                 <i class="fa-regular fa-square-plus me-2"></i> ADD Task
               </div>
@@ -178,44 +197,65 @@
         </div>
 
         <div class="col-md-4 mb-1">
-          <div class="card">
+          <div
+            class="card"
+            @dragover.prevent="dragOver"
+            @drop="dropToBoard('in_progress')"
+          >
             <div class="card-header bg-info">
-              <i class="fa-solid fa-bars"></i> Pending
+              <i class="fa-solid fa-bars"></i> In Progress
             </div>
             <div class="card-body alert-info">
-              <div class="item mb-2 bg-white p-3 rounded">
+              <div
+                class="item mb-2 bg-white p-2 rounded"
+                v-for="(task, index) in filterTask('in_progress')"
+                :key="index"
+                :draggable="true"
+                @dragstart="dragStart(task.id)"
+              >
                 <div class="d-flex mb-2 justify-content-between">
-                  <h5 class="text-dark">Title</h5>
-                  <i class="fa-solid fa-ellipsis-vertical text-dark"></i>
+                  <b class="text-dark">{{ task.title }}</b>
+                  <div class="">
+                    <i
+                      class="fa-solid fa-pen me-2 text-dark"
+                      @click="openDialog('update', task.id)"
+                    ></i>
+                    <i
+                      class="fa-solid fa-trash text-danger"
+                      @click="deleteData(task.id)"
+                    ></i>
+                  </div>
                 </div>
 
                 <div class="d-flex justify-content-between align-bottom">
                   <div class="col-md-9">
                     <div class="">
                       <i class="fa-regular fa-clock"></i>
-                      Deadline : 23-4-2023
+                      Deadline : {{ task.deadline }}
                     </div>
                     <v-chip
                       :color="
-                        project.priority == 'low'
+                        task.priority == 'low'
                           ? 'green'
-                          : project.priority == 'medium'
+                          : task.priority == 'medium'
                           ? 'orange'
                           : 'red'
                       "
-                      :text="project.priority"
+                      :text="task.priority"
                       class="text-uppercase me-3"
                       label
                       size="small"
                     ></v-chip>
                   </div>
-                  <div v-for="(member, index) in team.members" :key="index">
-                    <v-avatar :image="member.img" size="x-small"> </v-avatar>
+                  <div v-for="(member, index) in task.members" :key="index">
+                    <v-avatar :image="member" size="x-small"> </v-avatar>
                   </div>
                 </div>
               </div>
-
-              <div class="btn bg-white mt-3 w-100">
+              <div
+                class="btn bg-white mt-3 w-100"
+                @click="openDialog('add', 'in_progress')"
+              >
                 <i class="fa-regular fa-square-plus me-2"></i> ADD Task
               </div>
             </div>
@@ -223,232 +263,310 @@
         </div>
 
         <div class="col-md-4 mb-1">
-          <div class="card">
+          <div
+            class="card"
+            @dragover.prevent="dragOver"
+            @drop="dropToBoard('done')"
+          >
             <div class="card-header bg-success">
-              <i class="fa-solid fa-bars"></i> Pending
+              <i class="fa-solid fa-bars"></i> Done
             </div>
             <div class="card-body alert-success">
-              <div class="item mb-2 bg-white p-3 rounded">
+              <div
+                class="item mb-2 bg-white p-2 rounded"
+                v-for="(task, index) in filterTask('done')"
+                :key="index"
+                :draggable="true"
+                @dragstart="dragStart(task.id)"
+              >
                 <div class="d-flex mb-2 justify-content-between">
-                  <h5 class="text-dark">Title</h5>
-                  <i class="fa-solid fa-ellipsis-vertical text-dark"></i>
+                  <b class="text-dark">{{ task.title }}</b>
+                  <div class="">
+                    <i
+                      class="fa-solid fa-pen me-2 text-dark"
+                      @click="openDialog('update', task.id)"
+                    ></i>
+                    <i
+                      class="fa-solid fa-trash text-danger"
+                      @click="deleteData(task.id)"
+                    ></i>
+                  </div>
                 </div>
 
                 <div class="d-flex justify-content-between align-bottom">
                   <div class="col-md-9">
                     <div class="">
                       <i class="fa-regular fa-clock"></i>
-                      Deadline : 23-4-2023
+                      Deadline : {{ task.deadline }}
                     </div>
                     <v-chip
                       :color="
-                        project.priority == 'low'
+                        task.priority == 'low'
                           ? 'green'
-                          : project.priority == 'medium'
+                          : task.priority == 'medium'
                           ? 'orange'
                           : 'red'
                       "
-                      :text="project.priority"
+                      :text="task.priority"
                       class="text-uppercase me-3"
                       label
                       size="small"
                     ></v-chip>
                   </div>
-                  <div v-for="(member, index) in team.members" :key="index">
-                    <v-avatar :image="member.img" size="x-small"> </v-avatar>
+                  <div v-for="(member, index) in task.members" :key="index">
+                    <v-avatar :image="member" size="x-small"> </v-avatar>
                   </div>
                 </div>
               </div>
 
-              <div class="item mb-2 bg-white p-3 rounded">
-                <div class="d-flex mb-2 justify-content-between">
-                  <h5 class="text-dark">Title</h5>
-                  <i class="fa-solid fa-ellipsis-vertical text-dark"></i>
-                </div>
-
-                <div class="d-flex justify-content-between align-bottom">
-                  <div class="col-md-9">
-                    <div class="">
-                      <i class="fa-regular fa-clock"></i>
-                      Deadline : 23-4-2023
-                    </div>
-                    <v-chip
-                      :color="
-                        project.priority == 'low'
-                          ? 'green'
-                          : project.priority == 'medium'
-                          ? 'orange'
-                          : 'red'
-                      "
-                      :text="project.priority"
-                      class="text-uppercase me-3"
-                      label
-                      size="small"
-                    ></v-chip>
-                  </div>
-                  <div v-for="(member, index) in team.members" :key="index">
-                    <v-avatar :image="member.img" size="x-small"> </v-avatar>
-                  </div>
-                </div>
-              </div>
-
-              <div class="item mb-2 bg-white p-3 rounded">
-                <div class="d-flex mb-2 justify-content-between">
-                  <h5 class="text-dark">Title</h5>
-                  <i class="fa-solid fa-ellipsis-vertical text-dark"></i>
-                </div>
-
-                <div class="d-flex justify-content-between align-bottom">
-                  <div class="col-md-9">
-                    <div class="">
-                      <i class="fa-regular fa-clock"></i>
-                      Deadline : 23-4-2023
-                    </div>
-                    <v-chip
-                      :color="
-                        project.priority == 'low'
-                          ? 'green'
-                          : project.priority == 'medium'
-                          ? 'orange'
-                          : 'red'
-                      "
-                      :text="project.priority"
-                      class="text-uppercase me-3"
-                      label
-                      size="small"
-                    ></v-chip>
-                  </div>
-                  <div v-for="(member, index) in team.members" :key="index">
-                    <v-avatar :image="member.img" size="x-small"> </v-avatar>
-                  </div>
-                </div>
-              </div>
-
-              <div class="btn bg-white mt-3 w-100">
+              <div
+                class="btn bg-white mt-3 w-100"
+                @click="openDialog('add', 'done')"
+              >
                 <i class="fa-regular fa-square-plus me-2"></i> ADD Task
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <v-dialog v-if="dialogVisible" v-model="dialogVisible">
-        <form action="" class="card col-8 mx-auto p-3">
-          <div class="row">
-            <div class="col-6">
-              <div class="form-gorup mb-4">
-                <label class="form-label">Title</label>
-                <input
-                  type="text"
-                  v-model="task.title"
-                  class="form-control form-control-lg"
-                  :class="errors.title ? 'is-invalid' : ''"
-                />
-                <div v-if="errors && errors.title" class="text-danger">
-                  {{ errors.title[0] }}
+        <!-- add dialog  -->
+        <v-dialog v-if="dialogVisible" v-model="dialogVisible">
+          <form action="" class="card col-8 mx-auto p-3">
+            <div class="row">
+              <div class="col-6">
+                <div class="form-gorup mb-4">
+                  <label class="form-label">Title</label>
+                  <input
+                    type="text"
+                    v-model="task.title"
+                    class="form-control form-control-lg"
+                    :class="errors.title ? 'is-invalid' : ''"
+                  />
+                  <div v-if="errors && errors.title" class="text-danger">
+                    {{ errors.title[0] }}
+                  </div>
                 </div>
-              </div>
 
-              <div class="form-gorup mb-4">
-                <label class="form-label">Description</label>
-                <input
-                  type="text"
-                  v-model="task.desc"
-                  class="form-control form-control-lg"
-                  :class="errors.desc ? 'is-invalid' : ''"
-                />
-                <div v-if="errors && errors.desc" class="text-danger">
-                  {{ errors.desc[0] }}
+                <div class="form-gorup mb-4">
+                  <label class="form-label">Description</label>
+                  <input
+                    type="text"
+                    v-model="task.description"
+                    class="form-control form-control-lg"
+                    :class="errors.description ? 'is-invalid' : ''"
+                  />
+                  <div v-if="errors && errors.description" class="text-danger">
+                    {{ errors.description[0] }}
+                  </div>
                 </div>
-              </div>
 
-              <div class="form-group mb-4">
-                <label class="form-label">Members</label>
-                <select
-                  class="select form-control form-control-lg"
-                  :class="errors.members ? 'is-invalid' : ''"
-                  v-model="task.members"
-                  multiple
-                >
-                  <option disabled>members</option>
-                  <option
-                    v-for="(member, index) in team.members"
-                    :key="index"
-                    :value="member.id"
+                <div class="form-group mb-4">
+                  <label class="form-label">Members</label>
+                  <select
+                    class="select form-control form-control-lg"
+                    :class="errors.members ? 'is-invalid' : ''"
+                    v-model="task.members"
+                    multiple
                   >
-                    {{ member.name }}
-                  </option>
-                </select>
-                <div v-if="errors && errors.members" class="text-danger">
-                  {{ errors.members[0] }}
+                    <option disabled>members</option>
+                    <option
+                      v-for="(member, index) in team.members"
+                      :key="index"
+                      :value="member.user_id"
+                    >
+                      {{ member.name }}
+                    </option>
+                  </select>
+                  <div v-if="errors && errors.members" class="text-danger">
+                    {{ errors.members[0] }}
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-6">
+                <div class="form-group mb-4">
+                  <label class="form-label">Start Date</label>
+                  <input
+                    type="date"
+                    v-model="task.start_date"
+                    class="form-control form-control-lg"
+                    :class="errors.start_date ? 'is-invalid' : ''"
+                  />
+                  <div v-if="errors && errors.start_date" class="text-danger">
+                    {{ errors.start_date[0] }}
+                  </div>
+                </div>
+
+                <div class="form-group mb-4">
+                  <label class="form-label">Deadline</label>
+                  <input
+                    type="date"
+                    v-model="task.deadline"
+                    class="form-control form-control-lg"
+                    :class="errors.deadline ? 'is-invalid' : ''"
+                  />
+                  <div v-if="errors && errors.deadline" class="text-danger">
+                    {{ errors.deadline[0] }}
+                  </div>
+                </div>
+
+                <div class="form-group mb-4">
+                  <label class="form-label">Priority</label>
+                  <select
+                    class="select form-control form-control-lg"
+                    :class="errors.priority ? 'is-invalid' : ''"
+                    v-model="task.priority"
+                  >
+                    <option disabled>Priority</option>
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                  </select>
+                  <div v-if="errors && errors.priority" class="text-danger">
+                    {{ errors.priority[0] }}
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div class="col-6">
-              <div class="form-group mb-4">
-                <label class="form-label">Start Date</label>
-                <input
-                  type="date"
-                  v-model="task.start_date"
-                  class="form-control form-control-lg"
-                  :class="errors.start_date ? 'is-invalid' : ''"
-                />
-                <div v-if="errors && errors.start_date" class="text-danger">
-                  {{ errors.start_date[0] }}
+            <div class="d-flex justify-content-end my-3">
+              <button
+                type="button"
+                class="btn btn-primary text-white me-3"
+                @click="addTask()"
+              >
+                ADD
+              </button>
+              <button
+                type="button"
+                class="btn btn-secondary text-dark"
+                @click="closeDialog()"
+              >
+                Close
+              </button>
+            </div>
+          </form>
+        </v-dialog>
+
+        <!-- update dialog -->
+        <v-dialog v-if="updateDialogVisible" v-model="updateDialogVisible">
+          <form action="" class="card col-8 mx-auto p-3">
+            <div class="row">
+              <div class="col-6">
+                <div class="form-gorup mb-4">
+                  <label class="form-label">Title</label>
+                  <input
+                    type="text"
+                    v-model="updateTaskData.title"
+                    class="form-control form-control-lg"
+                    :class="errors.title ? 'is-invalid' : ''"
+                  />
+                  <div v-if="errors && errors.title" class="text-danger">
+                    {{ errors.title[0] }}
+                  </div>
+                </div>
+
+                <div class="form-gorup mb-4">
+                  <label class="form-label">Description</label>
+                  <input
+                    type="text"
+                    v-model="updateTaskData.description"
+                    class="form-control form-control-lg"
+                    :class="errors.description ? 'is-invalid' : ''"
+                  />
+                  <div v-if="errors && errors.description" class="text-danger">
+                    {{ errors.description[0] }}
+                  </div>
+                </div>
+
+                <div class="form-group mb-4">
+                  <label class="form-label">Members</label>
+                  <select
+                    class="select form-control form-control-lg"
+                    :class="errors.members ? 'is-invalid' : ''"
+                    v-model="updateTaskData.members"
+                    multiple
+                  >
+                    <option disabled>members</option>
+                    <option
+                      v-for="(member, index) in team.members"
+                      :key="index"
+                      :value="member.user_id"
+                    >
+                      {{ member.name }}
+                    </option>
+                  </select>
+                  <div v-if="errors && errors.members" class="text-danger">
+                    {{ errors.members[0] }}
+                  </div>
                 </div>
               </div>
 
-              <div class="form-group mb-4">
-                <label class="form-label">Deadline</label>
-                <input
-                  type="date"
-                  v-model="task.deadline"
-                  class="form-control form-control-lg"
-                  :class="errors.deadline ? 'is-invalid' : ''"
-                />
-                <div v-if="errors && errors.deadline" class="text-danger">
-                  {{ errors.deadline[0] }}
+              <div class="col-6">
+                <div class="form-group mb-4">
+                  <label class="form-label">Start Date</label>
+                  <input
+                    type="date"
+                    v-model="updateTaskData.start_date"
+                    class="form-control form-control-lg"
+                    :class="errors.start_date ? 'is-invalid' : ''"
+                  />
+                  <div v-if="errors && errors.start_date" class="text-danger">
+                    {{ errors.start_date[0] }}
+                  </div>
                 </div>
-              </div>
 
-              <div class="form-group mb-4">
-                <label class="form-label">Priority</label>
-                <select
-                  class="select form-control form-control-lg"
-                  :class="errors.priority ? 'is-invalid' : ''"
-                  v-model="task.priority"
-                >
-                  <option disabled>Priority</option>
-                  <option value="low">Low</option>
-                  <option value="medium">Medium</option>
-                  <option value="high">High</option>
-                </select>
-                <div v-if="errors && errors.priority" class="text-danger">
-                  {{ errors.priority[0] }}
+                <div class="form-group mb-4">
+                  <label class="form-label">Deadline</label>
+                  <input
+                    type="date"
+                    v-model="updateTaskData.deadline"
+                    class="form-control form-control-lg"
+                    :class="errors.deadline ? 'is-invalid' : ''"
+                  />
+                  <div v-if="errors && errors.deadline" class="text-danger">
+                    {{ errors.deadline[0] }}
+                  </div>
+                </div>
+
+                <div class="form-group mb-4">
+                  <label class="form-label">Priority</label>
+                  <select
+                    class="select form-control form-control-lg"
+                    :class="errors.priority ? 'is-invalid' : ''"
+                    v-model="updateTaskData.priority"
+                  >
+                    <option disabled>Priority</option>
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                  </select>
+                  <div v-if="errors && errors.priority" class="text-danger">
+                    {{ errors.priority[0] }}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <div class="d-flex justify-content-end my-3">
-            <button
-              type="button"
-              class="btn btn-primary text-white me-3"
-              @click="addTask()"
-            >
-              ADD
-            </button>
-            <button
-              type="button"
-              class="btn btn-secondary text-dark"
-              @click="closeDialog()"
-            >
-              Close
-            </button>
-          </div>
-        </form>
-      </v-dialog>
+            <div class="d-flex justify-content-end my-3">
+              <button
+                type="button"
+                class="btn btn-primary text-white me-3"
+                @click="updateTask()"
+              >
+                ADD
+              </button>
+              <button
+                type="button"
+                class="btn btn-secondary text-dark"
+                @click="closeDialog()"
+              >
+                Close
+              </button>
+            </div>
+          </form>
+        </v-dialog>
+      </div>
     </div>
     <Footer></Footer>
   </div>
@@ -473,21 +591,27 @@ export default {
     return {
       id: "",
       project: {},
+      tasks: [],
       images: [],
       files: [],
       team: {},
       task: {
         title: "",
-        desc: "",
+        description: "",
         members: [],
         start_date: "",
         deadline: "",
         priority: "",
         status: "",
       },
+      updateTaskData: {
+        members: [],
+      },
       leader_id: "",
       errors: [],
       dialogVisible: false,
+      updateDialogVisible: false,
+      dragId: null,
     };
   },
   methods: {
@@ -521,12 +645,41 @@ export default {
               this.team.members.push(data.teamMembers[i]);
             }
           }
-
-          console.log(this.teamMembersData);
         })
         .catch((e) => {
           console.log(e);
         });
+    },
+    getTask(id) {
+      axios
+        .get("http://localhost:8000/api/taskList/" + id)
+        .then((response) => {
+          let data = response.data;
+
+          this.tasks = data.tasks;
+
+          for (let i = 0; i < this.tasks.length; i++) {
+            this.tasks[i].members = [];
+            for (let j = 0; j < data.taskMembers[i].length; j++) {
+              if (data.taskMembers[i][j].img == null) {
+                data.taskMembers[i][j].img =
+                  "http://localhost:8000/image/default.jpg";
+              } else {
+                data.taskMembers[i][j].img =
+                  "http://localhost:8000/image/" + data.taskMembers[i][j].img;
+              }
+
+              this.tasks[i].members.push(data.taskMembers[i][j].img);
+            }
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    },
+    filterTask(status) {
+      let result = this.tasks.filter((task) => task.status === status);
+      return result;
     },
     removeMember(id) {
       Swal.fire({
@@ -586,20 +739,143 @@ export default {
         }
       });
     },
-    openDialog(status) {
-      this.task.status = status;
-      this.dialogVisible = true;
+    openDialog(method, status) {
+      if (method == "add") {
+        this.dialogVisible = true;
+        this.task.status = status;
+      } else {
+        this.getUpdateTask(status);
+        this.updateDialogVisible = true;
+      }
     },
     closeDialog() {
       // Set dialogVisible to false to close the dialog
       this.dialogVisible = false;
+      this.updateDialogVisible = false;
       // Clear form fields
       this.task = {};
+    },
+    addTask() {
+      axios
+        .post("http://localhost:8000/api/task/create/" + this.id, this.task)
+        .then((response) => {
+          if (response.data.status == true) {
+            this.closeDialog();
+            Swal.fire({
+              title: "success!",
+              text: response.data.message,
+              icon: "success",
+            });
+            this.getTask(this.id);
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+          if (e.response.status == 422) {
+            this.errors = e.response.data.errors;
+          }
+        });
+    },
+
+    getUpdateTask(id) {
+      axios
+        .get("http://localhost:8000/api/task/update/" + id)
+        .then((response) => {
+          if (response.data.status == true) {
+            this.updateTaskData = response.data.task;
+            this.updateTaskData.members = [];
+            for (let i = 0; i < response.data.taskMembers.length; i++) {
+              this.updateTaskData.members.push(
+                response.data.taskMembers[i].user_id
+              );
+            }
+            console.log(this.updateTaskData.members);
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+          if (e.response.status == 422) {
+            this.errors = e.response.data.errors;
+          }
+        });
+    },
+    updateTask() {
+      axios
+        .post("http://localhost:8000/api/task/update/", this.updateTaskData)
+        .then((response) => {
+          if (response.data.status == true) {
+            this.closeDialog();
+            Swal.fire({
+              title: "success!",
+              text: response.data.message,
+              icon: "success",
+            });
+            this.getTask(this.id);
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+          if (e.response.status == 422) {
+            this.errors = e.response.data.errors;
+          }
+        });
+    },
+
+    deleteData(id) {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios
+            .get("http://localhost:8000/api/task/delete/" + id)
+            .then((response) => {
+              console.log(response);
+              Swal.fire({
+                title: "Deleted!",
+                text: response.data,
+                icon: "success",
+              });
+              this.getTask(this.id);
+            })
+            .catch((e) => {
+              console.log(e);
+            });
+        }
+      });
+    },
+    dragStart(index) {
+      this.dragId = index;
+    },
+    dragOver(event) {
+      event.preventDefault();
+    },
+    dropToBoard(status) {
+       axios
+        .get(`http://localhost:8000/api/task/drag/${status}/${this.dragId}` )
+        .then((response) => {
+          if (response.data == true) {
+            this.getTask(this.id);
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+          if (e.response.status == 422) {
+            this.errors = e.response.data.errors;
+          }
+        });
+      
     },
   },
   mounted() {
     this.id = this.$route.query.id;
     this.getData(this.id);
+    this.getTask(this.id);
   },
 };
 </script>

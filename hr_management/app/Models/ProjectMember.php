@@ -11,7 +11,7 @@ class ProjectMember extends Model
 
     protected $fillable = [
         'project_id',
-        'task_id',
+
         'user_id',
         'role'
     ];

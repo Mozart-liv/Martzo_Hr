@@ -69,9 +69,9 @@
                     <v-chip
                       :color="
                         item.status == 'pending'
-                          ? 'gray'
-                          : item.status == 'in_progress'
                           ? 'orange'
+                          : item.status == 'in_progress'
+                          ? 'blue'
                           : 'green'
                       "
                       :text="item.status"
@@ -107,7 +107,6 @@ import axios from "axios";
 import { mapGetters } from "vuex";
 import Header from "../AppHeader.vue";
 import Footer from "../FooterPage.vue";
-import Swal from "sweetalert2";
 export default {
   name: "MyProjectPage",
   components: {
@@ -175,29 +174,6 @@ export default {
           console.log(e);
         });
     },
-    goCreate() {
-      this.$router.push({
-        name: "create#project",
-      });
-    },
-    messageAlert(mes) {
-      if (mes !== undefined && mes !== "" && mes !== null) {
-        Swal.fire({
-          title: "success!",
-          text: mes,
-          icon: "success",
-        });
-      }
-      this.$router.replace({ query: null });
-    },
-    updatePage(id) {
-      this.$router.push({
-        name: "update#project",
-        query: {
-          id: id,
-        },
-      });
-    },
     detailPage(id) {
       this.$router.push({
         name: "detail#project",
@@ -206,40 +182,10 @@ export default {
         },
       });
     },
-    deleteData(id) {
-      Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          axios
-            .get("http://localhost:8000/api/project/delete/" + id)
-            .then((response) => {
-              console.log(response);
-              Swal.fire({
-                title: "Deleted!",
-                text: response.data,
-                icon: "success",
-              });
-              this.getData();
-            })
-            .catch((e) => {
-              console.log(e);
-            });
-        }
-      });
-    },
   },
 
   mounted() {
-    this.message = this.$route.query.message;
     this.getData();
-    this.messageAlert(this.message);
   },
 };
 </script>

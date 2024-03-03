@@ -10,6 +10,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\RecordController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SalaryController;
+use App\Http\Controllers\TaskController;
 use App\Models\Department;
 use App\Models\Salary;
 use Illuminate\Http\Request;
@@ -120,4 +121,12 @@ Route::controller(ProjectController::class)->group(function(){
 
 });
 
-
+//Task
+Route::controller(TaskController::class)->group(function(){
+    Route::get('taskList/{pjId}', 'getTaskList');
+    Route::post('task/create/{pjId}', 'createTask');
+    Route::get('task/update/{id}', 'getUpdateTaskData');
+    Route::post('task/update', 'updateTask');
+     Route::get('task/delete/{id}', 'deleteTask');
+     Route::get('task/drag/{status}/{id}/', 'dragTask');
+});
