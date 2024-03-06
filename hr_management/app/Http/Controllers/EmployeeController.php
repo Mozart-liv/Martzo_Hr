@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Employee\EmployeeCreateRequest;
+use App\Http\Requests\Employee\EmployeeUpdateRequest;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Department;
@@ -36,7 +38,8 @@ class EmployeeController extends Controller
     }
 
     //create employee
-    public function createEmployee(Request $request){
+    public function createEmployee(EmployeeCreateRequest $request){
+        $request->validated();
         $this->Validation($request);
         $data = [
             'employee_id' => $request->employee_id,
@@ -78,7 +81,8 @@ class EmployeeController extends Controller
     }
 
     //update data
-    public function updateEmployee(Request $request){
+    public function updateEmployee(EmployeeUpdateRequest $request){
+        $request->validated();
         $this->updateVal($request, $request->id);
         $data = [
             'employee_id' => $request->employee_id,
@@ -137,35 +141,4 @@ class EmployeeController extends Controller
         return response()->json($message);
     }
 
-    //validate
-    private function Validation($request){
-        Validator::make($request->all(), [
-            'name' => 'required',
-            'email' => 'required|unique:users,email',
-            'password' => 'required|min:6',
-            'phone' => 'required|min:9',
-            'nrc' => 'required',
-            'address' => 'required',
-            'gender' => 'required',
-            'department_id' => 'required',
-            'date_of_join' => 'required',
-            'role_id' => 'required'
-
-        ])->validate();
-    }
-
-    //update validation
-    private function updateVal($request, $id){
-        Validator::make($request->all(), [
-            'name' => 'required',
-            'email' => 'required|unique:users,email,' . $id,
-            'phone' => 'required|min:9',
-            'nrc' => 'required',
-            'address' => 'required',
-            'gender' => 'required',
-            'department_id' => 'required',
-            'role_id' => 'required'
-
-        ])->validate();
-    }
 }

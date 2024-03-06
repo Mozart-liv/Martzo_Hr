@@ -14,7 +14,6 @@ class SalaryController extends Controller
         $salarys = Salary::select('salaries.*', 'users.name as name')
                             ->leftJoin('users', 'users.id', 'salaries.user_id')
                             ->get();
-
         return response()->json($salarys);
     }
 
