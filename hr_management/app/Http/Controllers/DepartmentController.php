@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Department\DepartmentCreateRequest;
+use App\Http\Requests\Department\DepartmentUpdateRequest;
 use App\Models\Department;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -18,8 +20,8 @@ class DepartmentController extends Controller
     }
 
     //create department
-    public function createDepartment(Request $request){
-        $this->Validation($request);
+    public function createDepartment(DepartmentCreateRequest $request){
+        $request->validated();
         $data = [
             'title' => $request->title
         ];
@@ -40,8 +42,8 @@ class DepartmentController extends Controller
     }
 
     //update data
-    public function updateDepartment(Request $request){
-        $this->updateValidation($request);
+    public function updateDepartment(DepartmentUpdateRequest $request){
+        $request->validated();
         $data = [
             'title' => $request->title
         ];
@@ -67,20 +69,6 @@ class DepartmentController extends Controller
 
         $message = 'Department deleted successfully!';
         return response()->json($message);
-    }
-
-    //validate
-    private function Validation($request){
-        Validator::make($request->all(), [
-            'title' => 'required|unique:departments,title'
-        ])->validate();
-    }
-
-    //update validate
-    private function updateValidation($request){
-        Validator::make($request->all(), [
-            'title' => 'required|unique:departments,title,' . $request->id
-        ])->validate();
     }
 
 }
