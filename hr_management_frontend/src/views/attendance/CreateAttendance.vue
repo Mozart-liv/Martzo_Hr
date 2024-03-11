@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header></Header>
+    <Header title="Attendance create"></Header>
     <div class="container">
       <div class="card my-15 col-md-6 mx-auto">
         <div class="card-body p-5">

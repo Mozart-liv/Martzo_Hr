@@ -65,7 +65,7 @@ class RoleController extends Controller
     public function deleterole($id){
         Role::where('id', $id)->delete();
 
-        $message = 'Employee deleted successfully!';
+        $message = 'Role deleted successfully!';
         return response()->json($message);
     }
 

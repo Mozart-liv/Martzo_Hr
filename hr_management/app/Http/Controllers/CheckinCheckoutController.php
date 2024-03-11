@@ -64,9 +64,9 @@ class CheckinCheckoutController extends Controller
 
     //get attendance
     public function getAttendance(){
-        $data = CheckinCheckout::select('checkin_checkouts.*', 'users.name as user')
+        $data = CheckinCheckout::select('checkin_checkouts.*', 'users.name as name')
                                 ->leftJoin('users', 'users.id', 'checkin_checkouts.user_id')
-                                ->orderBy('id', 'desc')
+                                ->orderBy('checkin_checkouts.id', 'desc')
                                 ->get();
 
         return response()->json($data);

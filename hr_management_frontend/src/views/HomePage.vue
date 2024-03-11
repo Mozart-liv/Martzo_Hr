@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header></Header>
+    <Header title="Home"></Header>
     <h1 v-if="!login">Login please</h1>
     <div v-else class="col-md-11 mx-auto p-3 my-15">
       <v-card class="mx-auto p-4 col-md-8 mb-10" elevation="6">
@@ -106,12 +106,6 @@
               :loading="attendance.loading"
               @update:options="getData"
             >
-              <!-- action buttons  -->
-              <template v-slot:[`item.actions`]="{ item }">
-                <v-icon small @click="deleteData(item.id)" class="text-danger"
-                  >mdi-delete</v-icon
-                >
-              </template>
             </v-data-table>
           </v-col>
         </v-row>
@@ -150,16 +144,11 @@
                     }}
                   </td>
                   <td class="text-center">
-                      {{ salary(payroll.salaries, "perDay") }}
-                    </td>
-                    <td class="text-center">
-                      {{
-                        salary(
-                          payroll.salaries,
-                          payroll.present
-                        )
-                      }}
-                    </td>
+                    {{ salary(payroll.salaries, "perDay") }}
+                  </td>
+                  <td class="text-center">
+                    {{ salary(payroll.salaries, payroll.present) }}
+                  </td>
                 </tr>
               </tbody>
             </v-table>
@@ -195,7 +184,6 @@ export default {
           { title: "Date", value: "date" },
           { title: "Check in", value: "check_in" },
           { title: "Check out", value: "check_out" },
-          { title: "Action", value: "actions" },
         ],
         items: [],
         loading: "",
@@ -428,15 +416,15 @@ export default {
     },
     salary(salaries, status) {
       if (salaries) {
-            if (status == "perDay") {
-              return Number(
-                salaries.amount / this.payroll.workingDays
-              ).toLocaleString();
-            } else {
-              return Number(
-                (salaries.amount / this.payroll.workingDays) * status
-              ).toLocaleString();
-            }
+        if (status == "perDay") {
+          return Number(
+            salaries.amount / this.payroll.workingDays
+          ).toLocaleString();
+        } else {
+          return Number(
+            (salaries.amount / this.payroll.workingDays) * status
+          ).toLocaleString();
+        }
       }
     },
   },

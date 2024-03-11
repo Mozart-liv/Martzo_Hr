@@ -65,7 +65,7 @@ class DepartmentController extends Controller
     public function deleteDepartment($id){
         Department::where('id', $id)->delete();
 
-        $message = 'Employee deleted successfully!';
+        $message = 'Department deleted successfully!';
         return response()->json($message);
     }
 

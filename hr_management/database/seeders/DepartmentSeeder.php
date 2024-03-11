@@ -17,5 +17,8 @@ class DepartmentSeeder extends Seeder
         Department::create([
             "title" => "Web Development"
         ]);
+        Department::create([
+            "title" => "Accounting"
+        ]);
     }
 }

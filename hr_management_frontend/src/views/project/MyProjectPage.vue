@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header></Header>
+    <Header title="My Project"></Header>
     <div class="col-md-10 my-15 mx-auto p-3">
       <div class="card mt-3">
         <div class="card-body p-4">

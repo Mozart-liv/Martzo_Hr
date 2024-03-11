@@ -24,7 +24,7 @@ return new class extends Migration
             $table->longText('address')->nullable();
             $table->string('nrc')->nullable();
             $table->string('img')->nullable();
-            $table->bigInteger('employee_id')->nullable();
+            $table->string('employee_id')->nullable();
             $table->bigInteger('department_id')->nullable();
             $table->date('date_of_join')->default(Carbon::now()->format('Y-m-d'));
             $table->boolean('is_present')->default(1);

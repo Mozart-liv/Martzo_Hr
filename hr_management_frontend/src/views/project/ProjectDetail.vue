@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header></Header>
+    <Header title="Project Detail"></Header>
     <div class="col-md-10 mx-auto p-3 my-15">
       <div class="mx-auto mb-3" onclick="history.back()">
         <v-icon>mdi-arrow-left-top</v-icon>Back
@@ -136,7 +136,7 @@
             @drop="dropToBoard('pending')"
           >
             <div class="card-header bg-warning">
-              <i class="fa-solid fa-bars"></i> Pending
+              <i class="fa-solid fa-list-check me-2"></i> Pending
             </div>
             <div class="card-body alert-warning">
               <div
@@ -203,7 +203,7 @@
             @drop="dropToBoard('in_progress')"
           >
             <div class="card-header bg-info">
-              <i class="fa-solid fa-bars"></i> In Progress
+              <i class="fa-solid fa-list-check me-2"></i> In Progress
             </div>
             <div class="card-body alert-info">
               <div
@@ -269,7 +269,7 @@
             @drop="dropToBoard('done')"
           >
             <div class="card-header bg-success">
-              <i class="fa-solid fa-bars"></i> Done
+              <i class="fa-solid fa-list-check me-2"></i> Done
             </div>
             <div class="card-body alert-success">
               <div
@@ -856,8 +856,8 @@ export default {
       event.preventDefault();
     },
     dropToBoard(status) {
-       axios
-        .get(`http://localhost:8000/api/task/drag/${status}/${this.dragId}` )
+      axios
+        .get(`http://localhost:8000/api/task/drag/${status}/${this.dragId}`)
         .then((response) => {
           if (response.data == true) {
             this.getTask(this.id);
@@ -869,7 +869,6 @@ export default {
             this.errors = e.response.data.errors;
           }
         });
-      
     },
   },
   mounted() {

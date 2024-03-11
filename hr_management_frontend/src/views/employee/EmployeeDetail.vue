@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Header></Header>
+        <Header title="Employee Detail"></Header>
             <div class="col-md-10 mx-auto p-3 my-15">
                 <div class="mx-auto col-md-8 mb-3" onclick="history.back()">
                     <v-icon>mdi-arrow-left-top</v-icon>Back

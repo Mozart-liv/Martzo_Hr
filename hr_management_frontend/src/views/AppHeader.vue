@@ -18,7 +18,7 @@
                 <span class="hamb-middle"></span>
                 <span class="hamb-bottom"></span>
               </button>
-              <h5>Martzo HR</h5>
+              <h5>{{ title }}</h5>
               <h5>Martzo HR</h5>
             </div>
           </div>
@@ -48,49 +48,45 @@
               @click="department()"
               v-if="userInfo.role_id == 1 || userInfo.role_id == 2"
             >
-              <i class="fa-solid fa-database me-3"></i>Department Mangement
+              <i class="fa-solid fa-users me-3"></i>Department Mangement
             </li>
             <li
               @click="role()"
               v-if="userInfo.role_id == 1 || userInfo.role_id == 2"
             >
-              <i class="fa-solid fa-database me-3"></i>Role Mangement
+              <i class="fa-solid fa-briefcase me-3"></i>Role Mangement
             </li>
             <li
               @click="salary()"
               v-if="userInfo.role_id == 1 || userInfo.role_id == 2"
             >
-              <i class="fa-solid fa-database me-3"></i>Salary Mangement
+              <i class="fa-solid fa-money-check-dollar me-3"></i>Salary
+              Mangement
             </li>
             <li
               @click="attendance()"
               v-if="userInfo.role_id == 1 || userInfo.role_id == 2"
             >
-              <i class="fa-solid fa-database me-3"></i>Attendance Mangement
+              <i class="fa-solid fa-clock me-3"></i> Attendance Mangement
             </li>
             <li
               @click="attendanceOverview()"
               v-if="userInfo.role_id == 1 || userInfo.role_id == 2"
             >
-              <i class="fa-solid fa-database me-3"></i>Attendance Overview
+              <i class="fa-solid fa-calendar-days me-3"></i>Attendance Overview
             </li>
             <li
               @click="project()"
-              v-if="userInfo.role_id == 1 || userInfo.role_id == 2"
+              v-if="userInfo.role_id == 1 || userInfo.role_id == 3"
             >
-              <i class="fa-solid fa-database me-3"></i>PRoject Mangement
+              <i class="fa-solid fa-diagram-project me-3"></i>Project Mangement
             </li>
             <li
               @click="payroll()"
               v-if="userInfo.role_id == 1 || userInfo.role_id == 2"
             >
-              <i class="fa-solid fa-database me-3"></i>Payroll
+              <i class="fa-solid fa-calendar-check me-3"></i>Payroll
             </li>
-            <li><i class="fa-solid fa-house me-3"></i>Events</li>
-            <li>Team</li>
-            <li>Services</li>
-            <li>Contact</li>
-            <li>Follow me</li>
           </ul>
         </nav>
       </div>
@@ -101,6 +97,7 @@
 import { mapGetters } from "vuex";
 export default {
   name: "AppHeader",
+  props: ['title'],
   data() {
     return {
       isClose: false,
@@ -253,14 +250,14 @@ html {
   z-index: -1;
   height: 100%;
   width: 3px;
-  background-color: #1c1c1c;
+  background-color: #db5656;
   -webkit-transition: width 0.2s ease-in;
   -moz-transition: width 0.2s ease-in;
   -ms-transition: width 0.2s ease-in;
   transition: width 0.2s ease-in;
 }
 .sidebar-nav li:hover {
-  background: skyblue !important;
+  background: rgba(0, 0, 0, 0) !important;
   border-radius: 10px;
   margin-left: 10px;
   margin-right: 10px;

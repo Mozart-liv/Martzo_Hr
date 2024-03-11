@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header></Header>
+    <Header title="Salary"></Header>
     <div class="col-md-8 my-15 mx-auto p-3">
       <button class="btn btn-primary" @click="goCreate()">
         <i class="fa-regular fa-square-plus"></i>

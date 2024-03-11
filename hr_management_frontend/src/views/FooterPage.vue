@@ -12,7 +12,7 @@
             Profile
           </div>
           <div @click="myproject()" class="d-flex flex-column align-center">
-            <i class="fas fa-user"></i>
+            <i class="fa-solid fa-diagram-project"></i>
             My Project
           </div>
           <div

@@ -1,8 +1,8 @@
 <template>
   <div>
-    <Header></Header>
+    <Header title="Salary update"></Header>
     <div class="container">
-      <div class="card my-15 col-md-6">
+      <div class="card my-15 col-md-6 mx-auto">
         <div class="card-body p-5">
           <h1 class="mb-5 text-primary">Update Department</h1>
           <form class="text-start row">

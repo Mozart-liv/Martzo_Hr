@@ -19,7 +19,7 @@ class AttendanceSeeder extends Seeder
         //
         $users = User::get();
         foreach($users as $user){
-            $periods =new CarbonPeriod('2023-01-01', '2024-01-30');
+            $periods =new CarbonPeriod('2024-01-01', '2024-03-8');
             foreach($periods as $period){
                 if($period->format('D') !== "Sat" && $period->format('D') !== "Sun"){
                     $data = [

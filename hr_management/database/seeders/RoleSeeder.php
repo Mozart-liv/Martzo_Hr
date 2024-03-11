@@ -21,5 +21,8 @@ class RoleSeeder extends Seeder
         Role::create([
             "title" => "hr"
         ]);
+        Role::create([
+            "title" => "project_manager"
+        ]);
     }
 }

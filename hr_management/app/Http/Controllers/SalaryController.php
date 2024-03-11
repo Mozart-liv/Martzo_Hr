@@ -69,7 +69,7 @@ class SalaryController extends Controller
             'amount' => $request->amount
         ];
 
-        $check = Salary::where('user_id', $request->user_id)->where('year', $request->year)->where('month', $request->month)->first();
+        $check = Salary::where('user_id', $request->user_id)->where('year', $request->year)->where('month', $request->month)->where('amount', $request->amount)->first();
         if($check){
             $message = 'This Data is already recordes';
             $status = false;

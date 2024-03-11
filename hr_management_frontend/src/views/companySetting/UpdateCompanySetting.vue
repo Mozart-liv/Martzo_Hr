@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Header></Header>
+        <Header title="Company update"></Header>
         <div class="container">
             <div class="card my-15 ">
                 <div class="card-body p-5">
@@ -57,7 +57,7 @@
                             </div>
 
                             <div class="form-group mb-4">
-                                <label class="form-label">Break start time</label>
+                                <label class="form-label">Break end time</label>
                                 <input type="time" v-model="data.break_end_time" class="form-control form-control-lg"  />    
 
                             </div>

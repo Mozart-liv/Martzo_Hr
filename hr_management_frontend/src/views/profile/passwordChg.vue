@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Header></Header>
+        <Header title="Password Change"></Header>
         <div class="container col-6 my-15">
             <div class="col-md-6 " onclick="history.back()">
                     <v-icon>mdi-arrow-left-top</v-icon>Back

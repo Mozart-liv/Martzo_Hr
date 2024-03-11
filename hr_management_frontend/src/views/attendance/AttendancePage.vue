@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header></Header>
+    <Header title="Attendance manual"></Header>
     <div class="col-md-8 my-15 mx-auto p-3">
       <button class="btn btn-primary" @click="goCreate()">
         <i class="fa-regular fa-square-plus"></i>
@@ -74,7 +74,7 @@ export default {
       message: "",
       search: "",
       headers: [
-        { title: "Employee", value: "user" },
+        { title: "Employee", value: "name" },
         { title: "Date", value: "date" },
         { title: "Check in", value: "check_in" },
         { title: "Check out", value: "check_out" },
