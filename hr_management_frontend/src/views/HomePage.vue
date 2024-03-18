@@ -111,6 +111,7 @@
         </v-row>
         <v-row>
           <v-col>
+            <h3>Payroll</h3>
             <v-table>
               <thead>
                 <tr>

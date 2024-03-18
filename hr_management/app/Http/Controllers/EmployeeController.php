@@ -40,7 +40,6 @@ class EmployeeController extends Controller
     //create employee
     public function createEmployee(EmployeeCreateRequest $request){
         $request->validated();
-        $this->Validation($request);
         $data = [
             'employee_id' => $request->employee_id,
             'name' => $request->name,
@@ -83,7 +82,6 @@ class EmployeeController extends Controller
     //update data
     public function updateEmployee(EmployeeUpdateRequest $request){
         $request->validated();
-        $this->updateVal($request, $request->id);
         $data = [
             'employee_id' => $request->employee_id,
             'name' => $request->name,
